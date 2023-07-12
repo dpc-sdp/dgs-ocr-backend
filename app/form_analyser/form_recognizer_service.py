@@ -1,6 +1,4 @@
-import json
 import time
-from dataclasses import dataclass
 
 import azure.ai.formrecognizer
 import azure.core.credentials
@@ -9,6 +7,7 @@ import config
 from form_analyser.response_handler import ResponseHandler
 from utils.logger_util import LoggerUtil
 from db.entities import ApiRequest
+from flask import abort
 
 
 class FormRecognizerService:
@@ -34,26 +33,22 @@ class FormRecognizerService:
     def analyze(self, apiRequest: ApiRequest) -> ResponseHandler:
         """Core request method."""
 
-        #  @TODO update to new design
-        # if apiRequest.sample_result:
-        #     sample_result_raw = json.load(
-        #         open(f'/app/tests/artefacts/{apiRequest.sample_result}.json'))
-        #     return ResponseHandler(
-        #         raw_response=sample_result_raw,
-        #         pdf_bytes=apiRequest.file_bytes,
-        #         request_id=apiRequest.request_id
-        #     )
-
         start_time = time.time()
-        analyze_document = self.client.begin_analyze_document(
-            self.model_id, apiRequest.file_bytes)
+        analyze_document = None
+        try:
+            analyze_document = self.client.begin_analyze_document(
+                self.model_id, apiRequest.file_bytes)
+        except Exception as e:
+            print(f"An error occurred during file parsing: {str(e)}")
+            abort(400, 'The file is corrupted or format is unsupported!')
 
         self.logger.info('Blocking until analysis result comes back')
         analyze_document.wait(40)  # Wait for max 20 seconds
 
         if analyze_document.status() != 'succeeded':
-            raise Exception(
-                f'Analysis time out. status = {analyze_document.status()}. {analyze_document}')
+            msg = f'Analysis timeout. status = {analyze_document.status()}'
+            self.logger.error(msg)
+            abort(408, msg)
 
         process_runtime = round(time.time() - start_time, 2)
         self.logger.info(

@@ -1,202 +1,259 @@
 {
-    "Insured Business": {
-        "value": "The Commissioner of Main Roads Western Australia (as Principals and/or Contractors). Other parties as specified in the definition of Insured",
-        "parsers": [],
-        "validations": [
-            {
-                "name": "RequiredValidation",
-                "input": "The Commissioner of Main Roads Western Australia (as Principals and/or Contractors). Other parties as specified in the definition of Insured",
-                "parms": "",
-                "output": "",
-                "status": 1,
-                "message": null
-            }
-        ],
-        "raw_value": "The Commissioner of Main Roads Western Australia (as Principals and/or Contractors). Other parties as specified in the definition of Insured",
-        "raw_value_type": "string",
-        "confidence": 0.756
-    },
-    "ABN": {
-        "value": "17 000 434 720",
-        "parsers": [],
-        "validations": [
-            {
-                "name": "RequiredValidation",
-                "input": "17 000 434 720",
-                "parms": "",
-                "output": "",
-                "status": 1,
-                "message": null
-            }
-        ],
-        "raw_value": "17 000 434 720",
-        "raw_value_type": "string",
-        "confidence": 0.965
-    },
-    "Date of issue": {
-        "value": "2022-06-30 00:00:00",
+    "u_cover_end_date": {
+        "confidence": 0.919,
         "parsers": [
             {
+                "input": "31/03/2023",
+                "message": "Successfuly matched with format : D/MM/YYYY",
                 "name": "ParseDate",
-                "input": "30 June 2022",
+                "output": "2023-03-31 00:00:00",
                 "parms": "",
-                "output": "2022-06-30 00:00:00",
-                "status": 1,
-                "message": "Successfuly matched with format : D MMMM YYYY"
+                "status": 1
             }
         ],
+        "raw_value": "31/03/2023",
+        "raw_value_type": "date",
         "validations": [
             {
+                "input": "2023-03-31 00:00:00",
+                "message": null,
                 "name": "RequiredValidation",
-                "input": "2022-06-30 00:00:00",
-                "parms": "",
                 "output": "",
-                "status": 1,
-                "message": null
+                "parms": "",
+                "status": 1
             }
         ],
-        "raw_value": "30 June 2022",
-        "raw_value_type": "string",
-        "confidence": 0.688,
+        "value": "2023-03-31 00:00:00",
         "value_type": "datetime"
     },
-    "Geographical Limit": {
-        "value": "Anywhere in the world but excluding any operations of the Insured domiciled in the United States of America or Canada. Notwithstanding the above, indemnity is provided to the Insured in respect of: 1) Products exported into those countries; and to 2) Directors of the Insured or Employees who are non-resident in such countries; and 3) Any person or firm engaged in a consultative capacity in such countries",
-        "parsers": [],
-        "validations": [
-            {
-                "name": "RequiredValidation",
-                "input": "Anywhere in the world but excluding any operations of the Insured domiciled in the United States of America or Canada. Notwithstanding the above, indemnity is provided to the Insured in respect of: 1) Products exported into those countries; and to 2) Directors of the Insured or Employees who are non-resident in such countries; and 3) Any person or firm engaged in a consultative capacity in such countries",
-                "parms": "",
-                "output": "",
-                "status": 1,
-                "message": null
-            }
-        ],
-        "raw_value": "Anywhere in the world but excluding any operations of the Insured domiciled in the United States of America or Canada. Notwithstanding the above, indemnity is provided to the Insured in respect of: 1) Products exported into those countries; and to 2) Directors of the Insured or Employees who are non-resident in such countries; and 3) Any person or firm engaged in a consultative capacity in such countries",
-        "raw_value_type": "string",
-        "confidence": 0.823
-    },
-    "Amount Limit": {
-        "value": "$250,000,000 any",
-        "parsers": [],
-        "validations": [
-            {
-                "name": "RequiredValidation",
-                "input": "$250,000,000 any",
-                "parms": "",
-                "output": "",
-                "status": 1,
-                "message": null
-            }
-        ],
-        "raw_value": "$250,000,000 any",
-        "raw_value_type": "string",
-        "confidence": 0.619
-    },
-    "Insurer Name": {
-        "value": "Certain Underwriters at Lloyd’s of London / Berkshire Hathaway Specialty Insurance (Australia)\nSwiss Re International SE (Australia)",
-        "parsers": [],
-        "validations": [
-            {
-                "name": "RequiredValidation",
-                "input": "Certain Underwriters at Lloyd’s of London / Berkshire Hathaway Specialty Insurance (Australia)\nSwiss Re International SE (Australia)",
-                "parms": "",
-                "output": "",
-                "status": 1,
-                "message": null
-            }
-        ],
-        "raw_value": "Certain Underwriters at Lloyd’s of London / Berkshire Hathaway Specialty Insurance (Australia)\nSwiss Re International SE (Australia)",
-        "raw_value_type": "string",
-        "confidence": 0.528
-    },
-    "Policy Number": {
-        "value": "CSINT2202773 / CSINT2200903 / CSINT2200915",
-        "parsers": [],
-        "validations": [
-            {
-                "name": "RequiredValidation",
-                "input": "CSINT2202773 / CSINT2200903 / CSINT2200915",
-                "parms": "",
-                "output": "",
-                "status": 1,
-                "message": null
-            }
-        ],
-        "raw_value": "CSINT2202773 / CSINT2200903 / CSINT2200915",
-        "raw_value_type": "string",
-        "confidence": 0.968
-    },
-    "Policy Period From": {
-        "value": "2022-06-30 00:00:00",
+    "u_cover_start_date": {
+        "confidence": 0.919,
         "parsers": [
             {
+                "input": "31/03/2022",
+                "message": "Successfuly matched with format : D/MM/YYYY",
                 "name": "ParseDate",
-                "input": "4.00 pm 30 June 2022",
+                "output": "2022-03-31 00:00:00",
                 "parms": "",
-                "output": "2022-06-30 00:00:00",
-                "status": 1,
-                "message": "Successfuly matched with format : h.mm A D MMMM YYYY"
+                "status": 1
             }
         ],
+        "raw_value": "31/03/2022",
+        "raw_value_type": "date",
         "validations": [
             {
+                "input": "2022-03-31 00:00:00",
+                "message": null,
                 "name": "RequiredValidation",
-                "input": "2022-06-30 00:00:00",
-                "parms": "",
                 "output": "",
-                "status": 1,
-                "message": null
+                "parms": "",
+                "status": 1
             }
         ],
-        "raw_value": "4.00 pm 30 June 2022",
-        "raw_value_type": "string",
-        "confidence": 0.943,
+        "value": "2022-03-31 00:00:00",
         "value_type": "datetime"
     },
-    "Policy Period To": {
-        "value": "2023-06-30 00:00:00",
+    "u_cover_type": {
+        "confidence": 0.99,
+        "parsers": [],
+        "raw_value": "professional",
+        "raw_value_type": "string",
+        "validations": [
+            {
+                "input": "professional",
+                "message": null,
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 1
+            }
+        ],
+        "value": "professional"
+    },
+    "u_document_date": {
+        "confidence": 0.918,
         "parsers": [
             {
+                "input": "March 31, 2022",
+                "message": "Successfuly matched with format : MMMM DD, YYYY",
                 "name": "ParseDate",
-                "input": "4.00 pm 30 June 2023",
+                "output": "2022-03-31 00:00:00",
                 "parms": "",
-                "output": "2023-06-30 00:00:00",
-                "status": 1,
-                "message": "Successfuly matched with format : h.mm A D MMMM YYYY"
+                "status": 1
             }
         ],
+        "raw_value": "March 31, 2022",
+        "raw_value_type": "float",
         "validations": [
             {
+                "input": "2022-03-31 00:00:00",
+                "message": null,
                 "name": "RequiredValidation",
-                "input": "2023-06-30 00:00:00",
-                "parms": "",
                 "output": "",
-                "status": 1,
-                "message": null
+                "parms": "",
+                "status": 1
             }
         ],
-        "raw_value": "4.00 pm 30 June 2023",
-        "raw_value_type": "string",
-        "confidence": 0.809,
+        "value": "2022-03-31 00:00:00",
         "value_type": "datetime"
     },
-    "policy type": {
-        "value": "Maintenance Liability Floater",
+    "u_document_type": {
+        "confidence": 0.906,
         "parsers": [],
+        "raw_value": "Public and Products Liability",
+        "raw_value_type": "string",
         "validations": [
             {
+                "input": "Public and Products Liability",
+                "message": null,
                 "name": "RequiredValidation",
-                "input": "Maintenance Liability Floater",
-                "parms": "",
                 "output": "",
-                "status": 1,
-                "message": null
+                "parms": "",
+                "status": 1
             }
         ],
-        "raw_value": "Maintenance Liability Floater",
+        "value": "Public and Products Liability"
+    },
+    "u_geographical_cover": {
+        "confidence": 0.847,
+        "parsers": [],
+        "raw_value": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories",
         "raw_value_type": "string",
-        "confidence": 0.961
+        "validations": [
+            {
+                "input": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories",
+                "message": null,
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 1
+            }
+        ],
+        "value": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories"
+    },
+    "u_insured_abn": {
+        "confidence": 0.95,
+        "parsers": [],
+        "raw_value": null,
+        "raw_value_type": "float",
+        "validations": [
+            {
+                "input": null,
+                "message": "Value Required",
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 0
+            }
+        ],
+        "value": null
+    },
+    "u_insured_name": {
+        "confidence": 0.91,
+        "parsers": [],
+        "raw_value": "MMMMMMM and/or subsidiary",
+        "raw_value_type": "string",
+        "validations": [
+            {
+                "input": "MMMMMMM and/or subsidiary",
+                "message": null,
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 1
+            }
+        ],
+        "value": "MMMMMMM and/or subsidiary"
+    },
+    "u_insurer_name": {
+        "confidence": 0.904,
+        "parsers": [],
+        "raw_value": "Chubb Insurance Australia Limited",
+        "raw_value_type": "string",
+        "validations": [
+            {
+                "input": "Chubb Insurance Australia Limited",
+                "message": null,
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 1
+            }
+        ],
+        "value": "Chubb Insurance Australia Limited"
+    },
+    "u_liability": {
+        "confidence": 0.791,
+        "parsers": [
+            {
+                "input": null,
+                "message": "Invalid value: cannot parse null",
+                "name": "CurrencyParser",
+                "output": "",
+                "parms": "",
+                "status": 0
+            }
+        ],
+        "raw_value": null,
+        "raw_value_type": "string",
+        "validations": [
+            {
+                "input": null,
+                "message": "Value Required",
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 0
+            }
+        ],
+        "value": null
+    },
+    "u_liability_aggregate": {
+        "confidence": 0.951,
+        "parsers": [
+            {
+                "input": null,
+                "message": "Invalid value: cannot parse null",
+                "name": "CurrencyParser",
+                "output": "",
+                "parms": "",
+                "status": 0
+            }
+        ],
+        "raw_value": null,
+        "raw_value_type": "string",
+        "validations": [
+            {
+                "input": null,
+                "message": "Value Required",
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 0
+            }
+        ],
+        "value": null
+    },
+    "u_policy_number": {
+        "confidence": 0.92,
+        "parsers": [],
+        "raw_value": "09PP555444",
+        "raw_value_type": "string",
+        "validations": [
+            {
+                "input": "09PP555444",
+                "message": null,
+                "name": "RequiredValidation",
+                "output": "",
+                "parms": "",
+                "status": 1
+            }
+        ],
+        "value": "09PP555444"
+    },
+    "u_registration_country": {
+        "parsers": [],
+        "validations": [],
+        "value": null
     }
 }

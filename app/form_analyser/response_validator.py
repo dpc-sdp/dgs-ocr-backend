@@ -1,30 +1,18 @@
-from enum import Enum
-from utils import date_parser_util
 
+from utils.logger_util import LoggerUtil
 from form_analyser.field_builder import FieldBuilder
 from form_analyser.enums.field_validation import FieldValidation
 from form_analyser.enums.field_parser import FieldParser
-
-
-class ValidatorBase:
-    def __init__(self, value) -> None:
-        self.value = value
-
-    def clean(self):
-        raise NotImplementedError()
-
-
-class DateValidator(ValidatorBase):
-    def __str__(self) -> str:
-        return 'DateValidator'
-
-    def clean(self):
-        return date_parser_util.extract_date(self.value)
+from form_analyser.enums.cover_types import CoverTypes
 
 
 class ResponseValidator:
-    def __init__(self, fields: dict) -> None:
+
+    logger = LoggerUtil("ResponseStructure")
+
+    def __init__(self, fields: dict, coverType: CoverTypes) -> None:
         self.fields: dict = fields
+        self.coverType: CoverTypes = coverType
 
     def _get(self, field_name, default_value=None):
         return self.fields.get(field_name, default_value)
@@ -36,90 +24,82 @@ class ResponseValidator:
 
     def build_response(self):
 
+        coverTypes = {'value': self.coverType.value, 'raw_value': self.coverType.value,
+                      'raw_value_type': 'string', 'confidence': 0.99}
+
         builder = FieldBuilder()\
-            .add_field('Insured Business', self._get('Insured Business'),
+            .add_field('u_cover_type', coverTypes,
                        validations=[FieldValidation.REQUIRED])\
-            .add_field('ABN', self._get('ABN'),
+            .add_field('u_insurer_name', self._get('insurer name'),
                        validations=[FieldValidation.REQUIRED])\
-            .add_field('Date of issue', self._get('issue date'),
+            .add_field('u_insured_name', self._get('Insured Business'),
+                       validations=[FieldValidation.REQUIRED])\
+            .add_field('u_insured_abn', self._get('ABN'),
+                       validations=[FieldValidation.REQUIRED])\
+            .add_field('u_document_date', self._get('issue date'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.DATE])\
-            .add_field('Geographical Limit', self._get('Geographical Limit'),
+            .add_field('u_document_type', self._get('policy type'),
                        validations=[FieldValidation.REQUIRED])\
-            .add_field('Amount Limit', self._get('amount limit'),
+            .add_field('u_policy_number', self._get('policy number'),
                        validations=[FieldValidation.REQUIRED])\
-            .add_field('Insurer Name', self._get('insurer name'),
-                       validations=[FieldValidation.REQUIRED])\
-            .add_field('Policy Number', self._get('policy number'),
-                       validations=[FieldValidation.REQUIRED])\
-            .add_field('Policy Period From', self._get('policy period from'),
+            .add_field('u_cover_start_date', self._get('policy period from'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.DATE])\
-            .add_field('Policy Period To', self._get('policy period to'),
+            .add_field('u_cover_end_date', self._get('policy period to'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.DATE])\
-            .add_field('policy type', self._get('policy type'),
+            .add_field('u_geographical_cover', self._get('geo limit'),
                        validations=[FieldValidation.REQUIRED])\
+            .add_field('u_registration_country', "")\
+
+        amount = None
+        amount_aggregate = None
+
+        self.logger.debug(f"{self.coverType} type selected")
+        if self.coverType == CoverTypes.PRODUCT:
+            amount = self._get('product_amount')
+            self.logger.debug(f"amount : {amount}")
+
+            if amount is None:
+                self.logger.debug(
+                    "amount is empty checking product and public amount")
+                amount = self._get('public_product_amount')
+                self.logger.debug(f"public_product_amount : {amount}")
+
+            amount_aggregate = self._get('product_amount_aggregate')
+            self.logger.debug(f"amount_aggregate : {amount_aggregate}")
+
+        elif self.coverType == CoverTypes.PUBLIC:
+            amount = self._get('public_amount')
+            self.logger.debug(f"amount : {amount}")
+
+            if amount is None:
+                self.logger.debug(
+                    "amount is empty checking product and public amount")
+                amount = self._get('public_product_amount')
+                self.logger.debug(f"public_product_amount : {amount}")
+
+            amount_aggregate = self._get('public_amount_aggregate')
+            self.logger.debug(f"amount_aggregate : {amount_aggregate}")
+
+        elif self.coverType == CoverTypes.PROFESSIONAL:
+            amount = self._get('professional_amount')
+            self.logger.debug(f"amount : {amount}")
+
+            amount_aggregate = self._get('professional_amount_aggregate')
+            self.logger.debug(f"amount_aggregate : {amount_aggregate}")
+
+        else:
+            self.logger.error("Unknown cover type")
+
+        builder.add_field('u_liability', amount,
+                          validations=[FieldValidation.REQUIRED],
+                          parser=[FieldParser.CURRENCY])\
+            .add_field('u_liability_aggregate', amount_aggregate,
+                       validations=[FieldValidation.REQUIRED],
+                       parser=[FieldParser.CURRENCY])
 
         response = builder.build()
 
         return response
-
-# expected_field_output = {
-#     "fields":{
-#         "ABN": {
-#                 "value": "17 000 434 720",
-#                 "value_type": "string",
-#                 # "validation": 'Validators.DATE',
-#                 "validators": [
-#                     {"name":"", "parms":"", "input":"", "status":"", "message":""}
-#                 ],
-#                 "parser": [
-#                     {"name":"", "parms":"", "input":"", "status":"", "message":""}
-#                 ],
-#                 "confidence":"",
-#                 "raw_input":"",
-#                 # {
-#                 #     "type": "string_val",
-#                 #     "params": "8 digits"
-#                 # }
-#             }
-#         },
-#     "status": ""
-# }
-#
-# Field
-# Type
-# Validation on API
-# Insured Business
-# Text
-# max length, valid characters
-# Policy Type (e.g. Professional indemnity)
-# Text
-# From defined list, value might drive rest of structure
-# ABN of company insured
-# Text (11 digits)
-# Optional
-# text format (11 digits) with no leading 0
-# validate with ABR checksum ?
-# Insurer Name
-# Text
-# max length, valid characters
-# Policy Number
-# Text
-# max length, valid characters
-# Date of issue
-# Date (dd/mm/yyyy)
-# valid date
-# Start Validity
-# Datetime (UTC?)
-# valid date time
-# End Validity
-# Datetime (UTC?)
-# valid date time, greater than start validity
-# Amount Limit
-# Number
-# valid number, associated with $ or AUD
-# Geographical Limit
-# Text
-# max length, valid characters

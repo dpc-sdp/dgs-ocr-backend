@@ -18,7 +18,6 @@ run all unittests
 
 ```
 $ cd app
-$ python3 -m unittest tests/test_formanalysercore_test.py -vvv
 $ python3 -m unittest tests/utils/test_date_parser.py -vvv
 $ python3 -m unittest tests/test_field_builder.py -vvv
 $ python3 -m unittest tests/services/required_validation_test.py -vvv

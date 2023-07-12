@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
+from utils.logger_util import LoggerUtil
 from form_analyser.services.parser_factory import ParserFactory
 from form_analyser.services.parser_service import ParserService
 from form_analyser.services.validator_factory import ValidatorFactory
@@ -23,18 +24,11 @@ class RawFieldValue:
             'confidence': self.confidence,
         }
 
-# @dataclass
-# class ResponseField:
-#     field_name: str
-#     confidence: str
-#     # parsers: ParserService
-
-#     @property
-#     def field_name(self):
-#         return self.field_name
-
 
 class FieldBuilder:
+
+    logger = LoggerUtil("FieldBuilder")
+
     def __init__(self):
         self.fields = {}
         self.parsers = {}
@@ -54,6 +48,7 @@ class FieldBuilder:
         result = {}
 
         for key, obj in self.fields.items():
+            self.logger.debug(f'process start for key: {key} & value: {obj}')
             item = {
                 "value": None,
                 "parsers": [],
@@ -65,11 +60,13 @@ class FieldBuilder:
             value = item["value"]
 
             if parsers is not None:
+                print(parsers)
                 for parser in parsers:
                     p: ParserService = ParserFactory.create_parser(type=parser)
                     if p:
                         if value is not None:
                             print(value)
+                            print(p)
                             res: ValidationDto = p.parse(value)
                             item["value"] = res.output
                             item["value_type"] = p.value_type

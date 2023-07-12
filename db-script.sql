@@ -10,19 +10,20 @@ CREATE TABLE "api_response" (
   "raw_from_formrecognizer" json NULL
 );
 
-CREATE TABLE "api_request" (
+CREATE TABLE "api_requests" (
   "id" serial NOT NULL,
   PRIMARY KEY ("id"),
-  "request_id" character(50) NULL,
-  "agent" character(50) NULL,
+  "request_id" VARCHAR(50) NULL,
+  "agent" VARCHAR(50) NULL,
   "created_on" timestamp NOT NULL,
-  "file_name" character(255) NULL,
-  "file_size" character(50) NULL,
-  "preserve_artefacts" character(50) NULL,
-  "model_id" character(50) NULL,
-  "sample_result" character(50) NULL,
-  "file_stash_location" character(255) NULL,
-  "response_stash_location" character(255) NULL
+  "cover_type" VARCHAR(50) NULL,
+  "file_name" VARCHAR(255) NULL,
+  "file_size" VARCHAR(50) NULL,
+  "preserve_artefacts" VARCHAR(50) NULL,
+  "model_id" VARCHAR(50) NULL,
+  "sample_result" VARCHAR(50) NULL,
+  "file_stash_location" VARCHAR(255) NULL,
+  "response_stash_location" VARCHAR(255) NULL
 );
 
 
