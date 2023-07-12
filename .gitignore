@@ -1,0 +1,10 @@
+.terraform
+terraform.tfstate*
+.terraform.lock.hcl
+app/secrets-for-running-locally/
+sample-pdf/
+__pycache__/
+.idea/*
+.vscode/*
+.DS_Store
+upload_log_*
