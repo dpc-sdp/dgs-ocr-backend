@@ -1,0 +1,202 @@
+{
+    "Insured Business": {
+        "value": "The Commissioner of Main Roads Western Australia (as Principals and/or Contractors). Other parties as specified in the definition of Insured",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "The Commissioner of Main Roads Western Australia (as Principals and/or Contractors). Other parties as specified in the definition of Insured",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "The Commissioner of Main Roads Western Australia (as Principals and/or Contractors). Other parties as specified in the definition of Insured",
+        "raw_value_type": "string",
+        "confidence": 0.756
+    },
+    "ABN": {
+        "value": "17 000 434 720",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "17 000 434 720",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "17 000 434 720",
+        "raw_value_type": "string",
+        "confidence": 0.965
+    },
+    "Date of issue": {
+        "value": "2022-06-30 00:00:00",
+        "parsers": [
+            {
+                "name": "ParseDate",
+                "input": "30 June 2022",
+                "parms": "",
+                "output": "2022-06-30 00:00:00",
+                "status": 1,
+                "message": "Successfuly matched with format : D MMMM YYYY"
+            }
+        ],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "2022-06-30 00:00:00",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "30 June 2022",
+        "raw_value_type": "string",
+        "confidence": 0.688,
+        "value_type": "datetime"
+    },
+    "Geographical Limit": {
+        "value": "Anywhere in the world but excluding any operations of the Insured domiciled in the United States of America or Canada. Notwithstanding the above, indemnity is provided to the Insured in respect of: 1) Products exported into those countries; and to 2) Directors of the Insured or Employees who are non-resident in such countries; and 3) Any person or firm engaged in a consultative capacity in such countries",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "Anywhere in the world but excluding any operations of the Insured domiciled in the United States of America or Canada. Notwithstanding the above, indemnity is provided to the Insured in respect of: 1) Products exported into those countries; and to 2) Directors of the Insured or Employees who are non-resident in such countries; and 3) Any person or firm engaged in a consultative capacity in such countries",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "Anywhere in the world but excluding any operations of the Insured domiciled in the United States of America or Canada. Notwithstanding the above, indemnity is provided to the Insured in respect of: 1) Products exported into those countries; and to 2) Directors of the Insured or Employees who are non-resident in such countries; and 3) Any person or firm engaged in a consultative capacity in such countries",
+        "raw_value_type": "string",
+        "confidence": 0.823
+    },
+    "Amount Limit": {
+        "value": "$250,000,000 any",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "$250,000,000 any",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "$250,000,000 any",
+        "raw_value_type": "string",
+        "confidence": 0.619
+    },
+    "Insurer Name": {
+        "value": "Certain Underwriters at Lloyd’s of London / Berkshire Hathaway Specialty Insurance (Australia)\nSwiss Re International SE (Australia)",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "Certain Underwriters at Lloyd’s of London / Berkshire Hathaway Specialty Insurance (Australia)\nSwiss Re International SE (Australia)",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "Certain Underwriters at Lloyd’s of London / Berkshire Hathaway Specialty Insurance (Australia)\nSwiss Re International SE (Australia)",
+        "raw_value_type": "string",
+        "confidence": 0.528
+    },
+    "Policy Number": {
+        "value": "CSINT2202773 / CSINT2200903 / CSINT2200915",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "CSINT2202773 / CSINT2200903 / CSINT2200915",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "CSINT2202773 / CSINT2200903 / CSINT2200915",
+        "raw_value_type": "string",
+        "confidence": 0.968
+    },
+    "Policy Period From": {
+        "value": "2022-06-30 00:00:00",
+        "parsers": [
+            {
+                "name": "ParseDate",
+                "input": "4.00 pm 30 June 2022",
+                "parms": "",
+                "output": "2022-06-30 00:00:00",
+                "status": 1,
+                "message": "Successfuly matched with format : h.mm A D MMMM YYYY"
+            }
+        ],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "2022-06-30 00:00:00",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "4.00 pm 30 June 2022",
+        "raw_value_type": "string",
+        "confidence": 0.943,
+        "value_type": "datetime"
+    },
+    "Policy Period To": {
+        "value": "2023-06-30 00:00:00",
+        "parsers": [
+            {
+                "name": "ParseDate",
+                "input": "4.00 pm 30 June 2023",
+                "parms": "",
+                "output": "2023-06-30 00:00:00",
+                "status": 1,
+                "message": "Successfuly matched with format : h.mm A D MMMM YYYY"
+            }
+        ],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "2023-06-30 00:00:00",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "4.00 pm 30 June 2023",
+        "raw_value_type": "string",
+        "confidence": 0.809,
+        "value_type": "datetime"
+    },
+    "policy type": {
+        "value": "Maintenance Liability Floater",
+        "parsers": [],
+        "validations": [
+            {
+                "name": "RequiredValidation",
+                "input": "Maintenance Liability Floater",
+                "parms": "",
+                "output": "",
+                "status": 1,
+                "message": null
+            }
+        ],
+        "raw_value": "Maintenance Liability Floater",
+        "raw_value_type": "string",
+        "confidence": 0.961
+    }
+}

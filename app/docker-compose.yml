@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  formsapp:
+    build: .
+    image: coolforms:0
+    volumes:
+        - ./:/app
+    ports:
+      - "5001:5000" # Port 5000 causes problems on macOS due to conflict with some system service
+  formsapp-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "--app-id", "formsapp",
+      "--app-port", "5000",
+      "--components-path", "/components"
+     ]
+    volumes:
+        - "./components-for-running-locally/:/components" # Mount our components folder for the runtime to use. The mounted location must match the --components-path argument. Yeah I may have copy-pasted some of this YAML.
+        - "./secrets-for-running-locally/:/etc/secrets" # When running locally, get secrets from JSON files here
+    depends_on:
+      - formsapp
+    network_mode: "service:formsapp" # So that the dapr sidecar is available to the app on `localhost` and vice-versa

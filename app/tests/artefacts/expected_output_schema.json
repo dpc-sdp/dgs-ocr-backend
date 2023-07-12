@@ -1,0 +1,776 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "Insured Business": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        },
+        "ABN": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        },
+        "Date of issue": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                },
+                "value_type": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence",
+                "value_type"
+            ]
+        },
+        "Geographical Limit": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        },
+        "Amount Limit": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        },
+        "Insurer Name": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        },
+        "Policy Number": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        },
+        "Policy Period From": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                },
+                "value_type": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence",
+                "value_type"
+            ]
+        },
+        "Policy Period To": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                },
+                "value_type": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence",
+                "value_type"
+            ]
+        },
+        "policy type": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "parsers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "validations": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                },
+                                "parms": {
+                                    "type": "string"
+                                },
+                                "output": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "input",
+                                "parms",
+                                "output",
+                                "status",
+                                "message"
+                            ]
+                        }
+                    ]
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "raw_value_type": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "value",
+                "parsers",
+                "validations",
+                "raw_value",
+                "raw_value_type",
+                "confidence"
+            ]
+        }
+    },
+    "required": [
+        "Insured Business",
+        "ABN",
+        "Date of issue",
+        "Geographical Limit",
+        "Amount Limit",
+        "Insurer Name",
+        "Policy Number",
+        "Policy Period From",
+        "Policy Period To",
+        "policy type"
+    ]
+}

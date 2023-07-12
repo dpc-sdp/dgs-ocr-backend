@@ -1,0 +1,236 @@
+<html>
+  <head>
+    <title>You can upload a PDF to get it analysed!</title>
+    <style>
+      #page-layout {
+	  text-align: center;
+      }
+      #page-layout * {
+	  text-align: initial;
+      }
+      #left-column {
+	  display: inline-block;
+	  vertical-align: top;
+	  border: 1px dashed black;
+      }
+      #right-column {
+	  display: inline-block;
+	  vertical-align: top;
+	  border: 1px dashed black;
+      }
+      #output_goes_here pre {
+	  max-height: 300px;
+	  max-width: 800px;
+	  overflow-y: scroll;
+      }
+      /* .style-table table, .style-table  th, .style-table  td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      } */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #f9f9f9;
+      }
+
+
+      td:first-child {
+        font-weight: bold;
+      }
+
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      // Todo: learn how to objects in Javascript
+      window.app = {};
+      window.app.latest_response = JSON.stringify({have: "not run yet"});
+      window.app.loading_status = "not-run-yet";
+      // `output_display` manages the output display, which at the moment is a `<pre>` element.
+      window.app.output_display = {}
+      window.app.output_display.target_element_id = "output_goes_here"
+      window.app.output_display.render = function() {
+          var target_element = document.getElementById(window.app.output_display.target_element_id);
+          switch(window.app.loading_status) {
+          case "not-run-yet":
+              target_element.innerText = "Analysis result will appear here after you upload a PDF."
+              break;
+          case "waiting":
+              target_element.innerText = "Waiting for server to reply..."
+              break;
+          case "got-response":
+	      target_element.innerHTML = "";
+	      // We do a few things...
+	      
+        // 1. Custom model output in structured format
+        var label_custom_model= document.createElement("H3");
+        label_custom_model.innerText='Custom Model View';
+        target_element.appendChild(label_custom_model);
+
+	      var custom_table = document.createElement('table');
+        custom_table.className = 'style-table-grey'
+
+	      const custom_model = JSON.parse(window.app.latest_response).custom_model_analysis;
+        for (const k in custom_model) {
+          var row = document.createElement('tr');
+          var cell1 = document.createElement('td');
+          cell1.innerText = k;
+          row.appendChild(cell1);
+          var cell2 = document.createElement('td');
+          cell2.innerText = custom_model[k];
+          row.appendChild(cell2);
+          custom_table.appendChild(row);
+	      }
+        target_element.appendChild(custom_table);
+
+        // 1.1. Custom model output in structured format
+        var label_custom_model_stats = document.createElement("H3");
+        label_custom_model_stats.innerText='Custom Model Stats';
+        target_element.appendChild(label_custom_model_stats);
+
+	      var custom_stats_table = document.createElement('table');
+        custom_stats_table.className = 'style-table-grey'
+
+	      const custom_model_stats = JSON.parse(window.app.latest_response).custom_model_stats;
+        for (const k in custom_model_stats) {
+          // if custom_model_stats[k]
+          var row = document.createElement('tr');
+          var cell1 = document.createElement('td');
+          cell1.innerText = k;
+          row.appendChild(cell1);
+          var cell2 = document.createElement('td');
+          cell2.innerText = custom_model_stats[k];
+          row.appendChild(cell2);
+          custom_stats_table.appendChild(row);
+
+
+          // if (custom_model_stats[k].constructor == Object) {
+          //   var nrow = document.createElement('tr');
+          //   var ncell1 = document.createElement('td');
+          //   ncell1.innerText = 'Value';
+          //   nrow.appendChild(ncell1);
+          //   var ncell2 = document.createElement('td');
+          //   ncell2.innerText = custom_model_stats[k]['content'];
+          //   nrow.appendChild(ncell2);
+          //   custom_stats_table.appendChild(nrow);
+          // }
+          
+          
+	      }
+
+	      target_element.appendChild(custom_stats_table);
+
+	      // 2. Table of some neat features from the analysis
+        var label_table= document.createElement("H3");
+        label_table.innerText='Table View';
+        target_element.appendChild(label_table);
+
+	      var table = document.createElement('table');
+        table.className = 'style-table '
+	      const dd = JSON.parse(window.app.latest_response).table_analysis;
+	      
+        for (const k in dd) {
+          var row = document.createElement('tr');
+          var cell1 = document.createElement('td');
+          cell1.innerText = k;
+          row.appendChild(cell1);
+          var cell2 = document.createElement('td');
+          cell2.innerText = dd[k];
+          row.appendChild(cell2);
+          table.appendChild(row);
+	      }
+	      target_element.appendChild(table);
+
+	      // 2. Dump JSON for fun
+        var label_json_dump= document.createElement("H3");
+        label_json_dump.innerText='Overall Content';
+        target_element.appendChild(label_json_dump);
+
+	      var pretty_json = JSON.stringify(JSON.parse(window.app.latest_response), null, 2);
+	      var pre = document.createElement('pre');
+	      pre.innerText = pretty_json;
+	      target_element.appendChild(pre);
+	      
+              break;
+          default:
+              console.log("Error, invalid state " + window.app.loading_status);
+          }
+      }
+      // `send_file()` is what happens when you click "submit" on the form in the left column
+      window.app.send_file = function() {
+          // Prepare and send XHR/fetch
+          const formData  = new FormData();
+          formData.append("file", document.getElementById("upload-doc").files[0]);
+	  if (document.getElementById("stash-input-and-output").checked) {
+	      formData.append("stash_input_and_output", document.getElementById("stash-input-and-output").value);
+	  }
+          window.app.loading_status = "waiting";
+          window.app.output_display.render();
+          fetch("/do-analyse", {
+              method: 'POST',
+              body: formData
+          }).then((response) =>
+              response.text()
+          ).then((t) => {
+              // When it comes back
+              window.app.loading_status = "got-response";
+              window.app.latest_response = t;
+              window.app.output_display.render();
+          }).catch((error) => {
+              console.error('Error:', error);
+          });
+      };
+      window.onload = function() {
+          // Initialise!
+          window.app.output_display.render();
+      }
+    </script>
+    <div id="page-layout">
+      <div id="left-column">
+	<h2>This is a form to submit PDFs into our document recognition API</h2>
+	<form action="/do-analyse" method="post" enctype="multipart/form-data">
+	  <p>
+	    This field does nothing I think:
+	    <input type="text" name="foobar">
+	  </p>
+	  <p>
+	    Stash input PDF and FormRecognizer analysis JSON:
+	    <input type="checkbox" name="stash-input-and-output" id="stash-input-and-output" value="yes">
+	  </p>
+	  <p>
+	    Upload the file here:
+	    <input type="file" name="doc" id="upload-doc">
+	  </p>
+	  <p>
+	    This is the submit button:
+	    <input type="submit" onclick="try { window.app.send_file(); } catch(err) { console.log(err); } finally { return false; }">
+	  </p>
+	</form>
+	<h3>Diagnostic information</h3>
+	<ul>
+	  <li>instance_id = {{ instance_id }}</li>
+	  <li>request_id = {{ request_id }}</li>
+	  <li>model_id = {{ model_id }}</li>
+	  <li>endpoint_url = {{ endpoint_url }}</li>
+	  <li>This is a number we change sometimes to validate that the build pipeline is working: 2</li>
+	</ul>
+      </div>
+      <div id="right-column">
+	<h2>Extracted results display here</h2>
+	<div id="output_goes_here">(Here)</pre>
+      </div>
+    </div>
+  </body>
+</html>
