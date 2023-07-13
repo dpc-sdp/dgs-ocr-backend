@@ -1,8 +1,6 @@
 
 import json
 import os
-import pandas as pd
-
 from flask import Flask, request, jsonify
 
 from db.entities import ApiRequest, AnalysedData, ExpectedResults
@@ -166,39 +164,5 @@ def analyze():
     apiRequestRepository.save_to_db(response)
 
     return response.get_json()
-
-
-@app.route('/list-models', methods=['GET'])
-def list_models():
-
-    admin = recognizer_service._setup_admin()
-    models = admin.list_document_models()
-    print(models)
-
-    model_list = [m.model_id for m in models]
-    return jsonify(model_list)
-
-
-@app.route('/upload-test-data', methods=['POST'])
-def upload_file():
-    file = request.files['file']
-    agent = ""
-    user_agent = request.headers.get('User-Agent')
-    if user_agent is not None:
-        agent = user_agent.split("/")[0]
-
-    if file:
-        filename = file.filename
-        excel_data = pd.read_excel(file)
-
-        for index, row in excel_data.iterrows():
-            expectedResults = ExpectedResults(
-                agent=agent, file_name=filename, row=row)
-            expectedResultsRepo.save_to_db(expectedResults)
-
-        return 'File uploaded and data stored in the database successfully.'
-    else:
-        return 'No file uploaded.'
-
 
 logger.info('Form recognizer initiated!')

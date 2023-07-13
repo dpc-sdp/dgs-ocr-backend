@@ -11,6 +11,5 @@ jsonschema
 flask-cors
 SQLAlchemy
 psycopg2-binary
-pandas
 openpyxl
 flask_jwt_extended
