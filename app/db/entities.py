@@ -11,20 +11,9 @@ from utils.model_stats import ModelStats
 from form_analyser.enums.cover_types import CoverTypes
 from sqlalchemy.ext.declarative import declarative_base
 from form_analyser.response_validator import ResponseValidator
-from sqlalchemy import Column, Integer, String, DateTime, JSON, Enum as EnumType, VARCHAR
+from sqlalchemy import Column, JSON, Enum as EnumType, VARCHAR
 from form_analyser.enums.cover_types import CoverTypes
-
-Base = declarative_base()
-
-
-@dataclass
-class BaseEntity(Base):
-    """ This is the abastract layer of all the classes and all the comment fileds used in the tables"""
-    __abstract__ = True
-
-    id: int = Column(Integer, primary_key=True)
-    request_id: str = Column(String, unique=True)
-    created_on: datetime = Column(DateTime, default=datetime.now)
+from db.base_entity import BaseEntity
 
 
 @dataclass
@@ -113,7 +102,7 @@ class AnalysedData(BaseEntity):
         self.custom_model_analysis = parsers.analyse_custom_model_for_parsing(
             raw_response)
         self.expected_fields = ResponseValidator(
-            self.custom_model_analysis, request.cover_type).build_response()
+            self.custom_model_analysis, request.cover_type).build_response(request.request_id)
         # self.extraction_stats = ModelStats().analyse_stats(raw_response, process_runtime)
         self.raw_from_formrecognizer = raw_response
 
@@ -130,14 +119,15 @@ class AnalysedData(BaseEntity):
     def get_json(self):
         return jsonify(self())
 
-    model_id: str = Column(String)
+    model_id: str = Column(VARCHAR)
+    created_by: str = Column(VARCHAR)
     expected_fields = Column(JSON)
     extraction_stats = Column(JSON)
     custom_model_analysis = Column(JSON)
     raw_from_formrecognizer = Column(JSON)
 
 
-@dataclass
+@ dataclass
 class ExpectedResults(BaseEntity):
     """ This class is used to store all the Analisis data """
     __tablename__ = 'expected_results'
@@ -173,23 +163,23 @@ class ExpectedResults(BaseEntity):
                 return None
         return val.strip()
 
-    agent: str = Column(String)
-    file_name: str = Column(String)
-    doc_name: str = Column(String)
-    insurer_name: str = Column(String)
-    insurer_names: str = Column(String)
-    insurer_abn: str = Column(String)
-    document_issue_date: str = Column(String)
-    policy_no: str = Column(String)
-    professional: str = Column(String)
-    public: str = Column(String)
-    product: str = Column(String)
-    policy_start_date: str = Column(String)
-    policy_end_date: str = Column(String)
-    policy_currency: str = Column(String)
-    professional_liability_amount: str = Column(String)
-    professional_aggregate: str = Column(String)
-    public_liability_amount: str = Column(String)
-    product_liability_amount: str = Column(String)
-    product_aggregate: str = Column(String)
-    region: str = Column(String)
+    agent: str = Column(VARCHAR)
+    file_name: str = Column(VARCHAR)
+    doc_name: str = Column(VARCHAR)
+    insurer_name: str = Column(VARCHAR)
+    insurer_names: str = Column(VARCHAR)
+    insurer_abn: str = Column(VARCHAR)
+    document_issue_date: str = Column(VARCHAR)
+    policy_no: str = Column(VARCHAR)
+    professional: str = Column(VARCHAR)
+    public: str = Column(VARCHAR)
+    product: str = Column(VARCHAR)
+    policy_start_date: str = Column(VARCHAR)
+    policy_end_date: str = Column(VARCHAR)
+    policy_currency: str = Column(VARCHAR)
+    professional_liability_amount: str = Column(VARCHAR)
+    professional_aggregate: str = Column(VARCHAR)
+    public_liability_amount: str = Column(VARCHAR)
+    product_liability_amount: str = Column(VARCHAR)
+    product_aggregate: str = Column(VARCHAR)
+    region: str = Column(VARCHAR)
