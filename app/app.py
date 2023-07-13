@@ -93,9 +93,8 @@ def login():
     maskedUsername = mask_username(username)
     logger.debug(f'Received login request for username: {maskedUsername}')
 
-    # @TODO Perform authentication logic here (e.g., check against a database)
-    if ((username == config.get_username() or username == config.get_sn_username) and
-            (password == config.get_password() or password == config.get_sn_password())):
+    if ((username == config.get_username() and password == config.get_password()) or
+            (username == config.get_sn_username() and password == config.get_sn_password())):
         logger.info('Login in successful')
     else:
         logger.warning(f'Failed login attempt for username: {maskedUsername}')
