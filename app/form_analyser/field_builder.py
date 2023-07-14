@@ -8,6 +8,8 @@ from form_analyser.services.validator_factory import ValidatorFactory
 from form_analyser.services.validator_service import FieldValidationService
 from form_analyser.services.response_dto import ValidationDto
 from form_analyser.enums.action_status import ActionStatus
+from db.api_response_stats import ApiResponseStats
+from db.repo.api_response_stats_repository import ApiResponseStatsRepository
 
 
 @dataclass
@@ -29,10 +31,12 @@ class FieldBuilder:
 
     logger = LoggerUtil("FieldBuilder")
 
-    def __init__(self):
+    def __init__(self, request_id):
         self.fields = {}
         self.parsers = {}
         self.validations = {}
+        self.request_id = request_id
+        self.apiResponseStatsRepository = ApiResponseStatsRepository()
 
     def add_field(self, field_name, raw_field: RawFieldValue, validations=None, parser=None):
         if raw_field is not None:
@@ -90,6 +94,12 @@ class FieldBuilder:
                     if valid is not None:
                         res = valid.is_valid(item["value"])
                         item["validations"].append(vars(res))
+
+            try:
+                apiResponseStats = ApiResponseStats(self.request_id, key, item)
+                self.apiResponseStatsRepository.save_to_db(apiResponseStats)
+            except Exception as e:
+                self.logger.error(f"An error occurred : {str(e)}")
 
             result[key] = item
 
