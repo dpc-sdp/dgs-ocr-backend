@@ -113,7 +113,7 @@ class AnalysedData(BaseEntity):
             "model_id": self.model_id,
             "expected_fields": self.expected_fields,
             # "extraction_stats": self.extraction_stats,
-            # "raw_from_formrecognizer": self.raw_from_formrecognizer
+            "raw_from_formrecognizer": self.raw_from_formrecognizer
         }
 
     def get_json(self):

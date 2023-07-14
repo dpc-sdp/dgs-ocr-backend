@@ -953,27 +953,6 @@
                 "validations",
                 "value"
             ]
-        },
-        "u_registration_country": {
-            "type": "object",
-            "properties": {
-                "parsers": {
-                    "type": "array",
-                    "items": {}
-                },
-                "validations": {
-                    "type": "array",
-                    "items": {}
-                },
-                "value": {
-                    "type": "null"
-                }
-            },
-            "required": [
-                "parsers",
-                "validations",
-                "value"
-            ]
         }
     },
     "required": [
@@ -988,7 +967,6 @@
         "u_insurer_name",
         "u_liability",
         "u_liability_aggregate",
-        "u_policy_number",
-        "u_registration_country"
+        "u_policy_number"
     ]
 }

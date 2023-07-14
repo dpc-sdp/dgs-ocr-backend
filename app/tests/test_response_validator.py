@@ -4,10 +4,12 @@ import jsonschema
 from flask import request, jsonify
 from utils.logger_util import LoggerUtil
 
-from form_analyser.response_validator import ResponseValidator
 from form_analyser.response_handler import ResponseHandler
 from db.entities import ApiRequest
 from form_analyser.enums.cover_types import CoverTypes
+from unittest.mock import patch
+from utils.db_connection import DbConnection
+from db.repo.api_response_stats_repository import ApiResponseStatsRepository
 
 log = LoggerUtil('Integration Test (Resposnse Validator):')
 
@@ -21,12 +23,15 @@ class TestResponseValidator(unittest.TestCase):
         with open('tests/artefacts/sample_result_aon_coc_main_roads_wa.json') as f:
             self.sample_raw = json.load(f)
 
-        # Call for resposne handler to process the form recogniser output and convert to consumable format
-        request = ApiRequest(None, False)
-        request.cover_type = CoverTypes.PROFESSIONAL
-        responseHandler = ResponseHandler(
-            request=request, raw_response=self.sample_raw, process_runtime=".23")
-        self.sample_output = responseHandler.parse()()
+        with patch.object(ApiResponseStatsRepository, "__init__", **{"return_value": None}) as mock_init,\
+                patch.object(ApiResponseStatsRepository, "save_to_db") as save_to_db,\
+                patch.object(DbConnection, "getDbUrl", **{"return_value": ''}) as getDbUrl:
+            # Call for resposne handler to process the form recogniser output and convert to consumable format
+            request = ApiRequest(None, False)
+            request.cover_type = CoverTypes.PROFESSIONAL
+            responseHandler = ResponseHandler(
+                request=request, raw_response=self.sample_raw, process_runtime=".23")
+            self.sample_output = responseHandler.parse()()
 
         log.info("Setup Completed")
         return super().setUp()
