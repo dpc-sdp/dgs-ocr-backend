@@ -3,6 +3,7 @@
 # For to connect to blob storage ("state store" in Dapr terminology)
 # and to get secrets form Azure (e.g. Form Recognizer key)
 from dapr.clients import DaprClient
+import os
 
 
 def get_azure_form_recognizer_endpoint():
@@ -18,9 +19,7 @@ def get_azure_form_recognizer_secret_key():
 
 
 def get_azure_form_recognizer_model_id():
-    # Key is handled by Dapr. When running locally, it's in a JSON file. When running in Azure, would be in Key Vault etc.
-    with DaprClient() as client:
-        return client.get_secret(store_name='form-recognizer-secret-store', key='modelid').secret['modelid']
+    return os.environ.get('modelid').rstrip()
 
 
 def get_azure_form_recognizer_db_uri():

@@ -52,61 +52,49 @@ class ResponseValidator:
             .add_field('u_geographical_cover', self._get('u_geographical_cover'),
                        validations=[FieldValidation.REQUIRED])\
 
+        self.logger.debug(f"{self.coverType} type selected")
+
         amount = None
         amount_aggregate = None
 
-        self.logger.debug(f"{self.coverType} type selected")
         if self.coverType == CoverTypes.PRODUCT:
             amount = self._get('product_amount')
-            self.logger.debug(f"amount : {amount}")
+            self.logger.debug(f"amount: {amount}")
 
             if amount is None:
                 self.logger.debug(
-                    "amount is empty checking product and public amount")
+                    "amount is empty, checking product and public amount")
                 amount = self._get('public_product_amount')
-                self.logger.debug(f"public_product_amount : {amount}")
+                self.logger.debug(f"public_product_amount: {amount}")
 
             amount_aggregate = self._get('product_amount_aggregate')
-            self.logger.debug(f"amount_aggregate : {amount_aggregate}")
-
-            if amount_aggregate is None:
-                amount_aggregate = amount
+            self.logger.debug(f"amount_aggregate: {amount_aggregate}")
 
         elif self.coverType == CoverTypes.PUBLIC:
             amount = self._get('public_amount')
-            self.logger.debug(f"amount : {amount}")
+            self.logger.debug(f"amount: {amount}")
 
             if amount is None:
                 self.logger.debug(
-                    "amount is empty checking product and public amount")
+                    "amount is empty, checking product and public amount")
                 amount = self._get('public_product_amount')
-                self.logger.debug(f"public_product_amount : {amount}")
+                self.logger.debug(f"public_product_amount: {amount}")
 
             amount_aggregate = self._get('public_amount_aggregate')
-            self.logger.debug(f"amount_aggregate : {amount_aggregate}")
-
-            if amount_aggregate is None:
-                amount_aggregate = amount
+            self.logger.debug(f"amount_aggregate: {amount_aggregate}")
 
         elif self.coverType == CoverTypes.PROFESSIONAL:
             amount = self._get('professional_amount')
-            self.logger.debug(f"amount : {amount}")
+            self.logger.debug(f"amount: {amount}")
 
             amount_aggregate = self._get('professional_amount_aggregate')
-            self.logger.debug(f"amount_aggregate : {amount_aggregate}")
-
-            if amount_aggregate is None:
-                amount_aggregate = amount
+            self.logger.debug(f"amount_aggregate: {amount_aggregate}")
 
         else:
             self.logger.error("Unknown cover type")
 
-        builder.add_field('u_liability', amount,
-                          validations=[FieldValidation.REQUIRED],
-                          parser=[FieldParser.CURRENCY])\
-            .add_field('u_liability_aggregate', amount_aggregate,
-                       validations=[FieldValidation.REQUIRED],
-                       parser=[FieldParser.CURRENCY])
+        builder.add_field('u_liability', amount, validations=[FieldValidation.REQUIRED], parser=[FieldParser.CURRENCY]) \
+            .add_field('u_liability_aggregate', amount_aggregate, validations=[FieldValidation.REQUIRED], parser=[FieldParser.CURRENCY])
 
         response = builder.build()
 
