@@ -27,138 +27,181 @@
                 }
             ],
             "confidence": 0.997,
-            "doc_type": "neural_v1_3",
+            "doc_type": "neural_v1_6",
             "fields": {
-                "ABN": {
-                    "bounding_regions": [],
-                    "confidence": 0.95,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "float"
-                },
-                "Insured Business": {
+                "product_amount": {
                     "bounding_regions": [
                         {
                             "page_number": 1,
                             "polygon": [
                                 {
-                                    "x": 277.0,
-                                    "y": 377.0
+                                    "x": 312.0,
+                                    "y": 679.0
                                 },
                                 {
-                                    "x": 460.0,
-                                    "y": 377.0
+                                    "x": 375.0,
+                                    "y": 679.0
                                 },
                                 {
-                                    "x": 460.0,
-                                    "y": 394.0
+                                    "x": 375.0,
+                                    "y": 696.0
                                 },
                                 {
-                                    "x": 277.0,
-                                    "y": 394.0
+                                    "x": 312.0,
+                                    "y": 696.0
                                 }
                             ]
                         }
                     ],
-                    "confidence": 0.91,
-                    "content": "MMMMMMM and/or subsidiary",
+                    "confidence": 0.935,
+                    "content": "10,000,000",
                     "spans": [
                         {
-                            "length": 25,
-                            "offset": 249
+                            "length": 10,
+                            "offset": 961
                         }
                     ],
-                    "value": "MMMMMMM and/or subsidiary",
+                    "value": "10,000,000",
                     "value_type": "string"
                 },
-                "amount aggregate": {
+                "professional_amount": {
                     "bounding_regions": [],
-                    "confidence": 0.957,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "float"
-                },
-                "amount limit": {
-                    "bounding_regions": [],
-                    "confidence": 0.956,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "float"
-                },
-                "geo limit": {
-                    "bounding_regions": [
-                        {
-                            "page_number": 1,
-                            "polygon": [
-                                {
-                                    "x": 280.0,
-                                    "y": 732.0
-                                },
-                                {
-                                    "x": 709.0,
-                                    "y": 732.0
-                                },
-                                {
-                                    "x": 709.0,
-                                    "y": 768.0
-                                },
-                                {
-                                    "x": 280.0,
-                                    "y": 768.0
-                                }
-                            ]
-                        }
-                    ],
                     "confidence": 0.847,
-                    "content": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories",
-                    "spans": [
-                        {
-                            "length": 117,
-                            "offset": 1055
-                        }
-                    ],
-                    "value": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories",
+                    "content": null,
+                    "spans": [],
+                    "value": null,
                     "value_type": "string"
                 },
-                "insurer name": {
+                "professional_amount_aggregate": {
+                    "bounding_regions": [],
+                    "confidence": 0.949,
+                    "content": null,
+                    "spans": [],
+                    "value": null,
+                    "value_type": "string"
+                },
+                "public_amount": {
                     "bounding_regions": [
                         {
                             "page_number": 1,
                             "polygon": [
                                 {
-                                    "x": 282.0,
-                                    "y": 466.0
+                                    "x": 311.0,
+                                    "y": 661.0
                                 },
                                 {
-                                    "x": 483.0,
-                                    "y": 466.0
+                                    "x": 374.0,
+                                    "y": 661.0
                                 },
                                 {
-                                    "x": 483.0,
-                                    "y": 482.0
+                                    "x": 374.0,
+                                    "y": 678.0
                                 },
                                 {
-                                    "x": 282.0,
-                                    "y": 482.0
+                                    "x": 311.0,
+                                    "y": 678.0
                                 }
                             ]
                         }
                     ],
-                    "confidence": 0.904,
-                    "content": "Chubb Insurance Australia Limited",
+                    "confidence": 0.919,
+                    "content": "10,000,000",
                     "spans": [
                         {
-                            "length": 33,
-                            "offset": 495
+                            "length": 10,
+                            "offset": 896
                         }
                     ],
-                    "value": "Chubb Insurance Australia Limited",
+                    "value": "10,000,000",
                     "value_type": "string"
                 },
-                "issue date": {
+                "public_product_amount": {
+                    "bounding_regions": [],
+                    "confidence": 0.962,
+                    "content": null,
+                    "spans": [],
+                    "value": null,
+                    "value_type": "string"
+                },
+                "public_product_amount_aggregate": {
+                    "bounding_regions": [],
+                    "confidence": 0.962,
+                    "content": null,
+                    "spans": [],
+                    "value": null,
+                    "value_type": "string"
+                },
+                "u_cover_end_date": {
+                    "bounding_regions": [
+                        {
+                            "page_number": 1,
+                            "polygon": [
+                                {
+                                    "x": 474.0,
+                                    "y": 537.0
+                                },
+                                {
+                                    "x": 543.0,
+                                    "y": 537.0
+                                },
+                                {
+                                    "x": 543.0,
+                                    "y": 554.0
+                                },
+                                {
+                                    "x": 474.0,
+                                    "y": 554.0
+                                }
+                            ]
+                        }
+                    ],
+                    "confidence": 0.92,
+                    "content": "31/03/2023",
+                    "spans": [
+                        {
+                            "length": 10,
+                            "offset": 595
+                        }
+                    ],
+                    "value": null,
+                    "value_type": "date"
+                },
+                "u_cover_start_date": {
+                    "bounding_regions": [
+                        {
+                            "page_number": 1,
+                            "polygon": [
+                                {
+                                    "x": 331.0,
+                                    "y": 537.0
+                                },
+                                {
+                                    "x": 402.0,
+                                    "y": 537.0
+                                },
+                                {
+                                    "x": 402.0,
+                                    "y": 553.0
+                                },
+                                {
+                                    "x": 331.0,
+                                    "y": 553.0
+                                }
+                            ]
+                        }
+                    ],
+                    "confidence": 0.918,
+                    "content": "31/03/2022",
+                    "spans": [
+                        {
+                            "length": 10,
+                            "offset": 580
+                        }
+                    ],
+                    "value": null,
+                    "value_type": "date"
+                },
+                "u_document_date": {
                     "bounding_regions": [
                         {
                             "page_number": 1,
@@ -193,7 +236,155 @@
                     "value": null,
                     "value_type": "float"
                 },
-                "policy number": {
+                "u_document_type": {
+                    "bounding_regions": [
+                        {
+                            "page_number": 1,
+                            "polygon": [
+                                {
+                                    "x": 281.0,
+                                    "y": 342.0
+                                },
+                                {
+                                    "x": 449.0,
+                                    "y": 342.0
+                                },
+                                {
+                                    "x": 449.0,
+                                    "y": 360.0
+                                },
+                                {
+                                    "x": 281.0,
+                                    "y": 360.0
+                                }
+                            ]
+                        }
+                    ],
+                    "confidence": 0.904,
+                    "content": "Public and Products Liability",
+                    "spans": [
+                        {
+                            "length": 29,
+                            "offset": 211
+                        }
+                    ],
+                    "value": "Public and Products Liability",
+                    "value_type": "string"
+                },
+                "u_geographical_cover": {
+                    "bounding_regions": [
+                        {
+                            "page_number": 1,
+                            "polygon": [
+                                {
+                                    "x": 280.0,
+                                    "y": 732.0
+                                },
+                                {
+                                    "x": 709.0,
+                                    "y": 732.0
+                                },
+                                {
+                                    "x": 709.0,
+                                    "y": 768.0
+                                },
+                                {
+                                    "x": 280.0,
+                                    "y": 768.0
+                                }
+                            ]
+                        }
+                    ],
+                    "confidence": 0.847,
+                    "content": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories",
+                    "spans": [
+                        {
+                            "length": 117,
+                            "offset": 1055
+                        }
+                    ],
+                    "value": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories",
+                    "value_type": "string"
+                },
+                "u_insured_abn": {
+                    "bounding_regions": [],
+                    "confidence": 0.945,
+                    "content": null,
+                    "spans": [],
+                    "value": null,
+                    "value_type": "float"
+                },
+                "u_insured_name": {
+                    "bounding_regions": [
+                        {
+                            "page_number": 1,
+                            "polygon": [
+                                {
+                                    "x": 277.0,
+                                    "y": 377.0
+                                },
+                                {
+                                    "x": 460.0,
+                                    "y": 377.0
+                                },
+                                {
+                                    "x": 460.0,
+                                    "y": 394.0
+                                },
+                                {
+                                    "x": 277.0,
+                                    "y": 394.0
+                                }
+                            ]
+                        }
+                    ],
+                    "confidence": 0.908,
+                    "content": "MMMMMMM and/or subsidiary",
+                    "spans": [
+                        {
+                            "length": 25,
+                            "offset": 249
+                        }
+                    ],
+                    "value": "MMMMMMM and/or subsidiary",
+                    "value_type": "string"
+                },
+                "u_insurer_name": {
+                    "bounding_regions": [
+                        {
+                            "page_number": 1,
+                            "polygon": [
+                                {
+                                    "x": 282.0,
+                                    "y": 466.0
+                                },
+                                {
+                                    "x": 483.0,
+                                    "y": 466.0
+                                },
+                                {
+                                    "x": 483.0,
+                                    "y": 482.0
+                                },
+                                {
+                                    "x": 282.0,
+                                    "y": 482.0
+                                }
+                            ]
+                        }
+                    ],
+                    "confidence": 0.903,
+                    "content": "Chubb Insurance Australia Limited",
+                    "spans": [
+                        {
+                            "length": 33,
+                            "offset": 495
+                        }
+                    ],
+                    "value": "Chubb Insurance Australia Limited",
+                    "value_type": "string"
+                },
+                "u_policy_number": {
                     "bounding_regions": [
                         {
                             "page_number": 1,
@@ -227,213 +418,6 @@
                     ],
                     "value": "09PP555444",
                     "value_type": "string"
-                },
-                "policy period from": {
-                    "bounding_regions": [
-                        {
-                            "page_number": 1,
-                            "polygon": [
-                                {
-                                    "x": 331.0,
-                                    "y": 537.0
-                                },
-                                {
-                                    "x": 402.0,
-                                    "y": 537.0
-                                },
-                                {
-                                    "x": 402.0,
-                                    "y": 553.0
-                                },
-                                {
-                                    "x": 331.0,
-                                    "y": 553.0
-                                }
-                            ]
-                        }
-                    ],
-                    "confidence": 0.919,
-                    "content": "31/03/2022",
-                    "spans": [
-                        {
-                            "length": 10,
-                            "offset": 580
-                        }
-                    ],
-                    "value": null,
-                    "value_type": "date"
-                },
-                "policy period to": {
-                    "bounding_regions": [
-                        {
-                            "page_number": 1,
-                            "polygon": [
-                                {
-                                    "x": 474.0,
-                                    "y": 537.0
-                                },
-                                {
-                                    "x": 543.0,
-                                    "y": 537.0
-                                },
-                                {
-                                    "x": 543.0,
-                                    "y": 554.0
-                                },
-                                {
-                                    "x": 474.0,
-                                    "y": 554.0
-                                }
-                            ]
-                        }
-                    ],
-                    "confidence": 0.919,
-                    "content": "31/03/2023",
-                    "spans": [
-                        {
-                            "length": 10,
-                            "offset": 595
-                        }
-                    ],
-                    "value": null,
-                    "value_type": "date"
-                },
-                "policy type": {
-                    "bounding_regions": [
-                        {
-                            "page_number": 1,
-                            "polygon": [
-                                {
-                                    "x": 281.0,
-                                    "y": 342.0
-                                },
-                                {
-                                    "x": 449.0,
-                                    "y": 342.0
-                                },
-                                {
-                                    "x": 449.0,
-                                    "y": 360.0
-                                },
-                                {
-                                    "x": 281.0,
-                                    "y": 360.0
-                                }
-                            ]
-                        }
-                    ],
-                    "confidence": 0.906,
-                    "content": "Public and Products Liability",
-                    "spans": [
-                        {
-                            "length": 29,
-                            "offset": 211
-                        }
-                    ],
-                    "value": "Public and Products Liability",
-                    "value_type": "string"
-                },
-                "product_amount": {
-                    "bounding_regions": [
-                        {
-                            "page_number": 1,
-                            "polygon": [
-                                {
-                                    "x": 312.0,
-                                    "y": 679.0
-                                },
-                                {
-                                    "x": 375.0,
-                                    "y": 679.0
-                                },
-                                {
-                                    "x": 375.0,
-                                    "y": 696.0
-                                },
-                                {
-                                    "x": 312.0,
-                                    "y": 696.0
-                                }
-                            ]
-                        }
-                    ],
-                    "confidence": 0.936,
-                    "content": "10,000,000",
-                    "spans": [
-                        {
-                            "length": 10,
-                            "offset": 961
-                        }
-                    ],
-                    "value": "10,000,000",
-                    "value_type": "string"
-                },
-                "professional_amount": {
-                    "bounding_regions": [],
-                    "confidence": 0.791,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "string"
-                },
-                "professional_amount_aggregate": {
-                    "bounding_regions": [],
-                    "confidence": 0.951,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "string"
-                },
-                "public_amount": {
-                    "bounding_regions": [
-                        {
-                            "page_number": 1,
-                            "polygon": [
-                                {
-                                    "x": 311.0,
-                                    "y": 661.0
-                                },
-                                {
-                                    "x": 374.0,
-                                    "y": 661.0
-                                },
-                                {
-                                    "x": 374.0,
-                                    "y": 678.0
-                                },
-                                {
-                                    "x": 311.0,
-                                    "y": 678.0
-                                }
-                            ]
-                        }
-                    ],
-                    "confidence": 0.92,
-                    "content": "10,000,000",
-                    "spans": [
-                        {
-                            "length": 10,
-                            "offset": 896
-                        }
-                    ],
-                    "value": "10,000,000",
-                    "value_type": "string"
-                },
-                "public_product_amount": {
-                    "bounding_regions": [],
-                    "confidence": 0.935,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "string"
-                },
-                "public_product_amount_aggregate": {
-                    "bounding_regions": [],
-                    "confidence": 0.952,
-                    "content": null,
-                    "spans": [],
-                    "value": null,
-                    "value_type": "string"
                 }
             },
             "spans": [
@@ -446,7 +430,7 @@
     ],
     "key_value_pairs": [],
     "languages": [],
-    "model_id": "neural_v1_3",
+    "model_id": "neural_v1_6",
     "pages": [
         {
             "angle": null,

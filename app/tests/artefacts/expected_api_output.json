@@ -1,6 +1,6 @@
 {
     "u_cover_end_date": {
-        "confidence": 0.919,
+        "confidence": 0.92,
         "parsers": [
             {
                 "input": "31/03/2023",
@@ -27,7 +27,7 @@
         "value_type": "datetime"
     },
     "u_cover_start_date": {
-        "confidence": 0.919,
+        "confidence": 0.918,
         "parsers": [
             {
                 "input": "31/03/2022",
@@ -98,7 +98,7 @@
         "value_type": "datetime"
     },
     "u_document_type": {
-        "confidence": 0.906,
+        "confidence": 0.904,
         "parsers": [],
         "raw_value": "Public and Products Liability",
         "raw_value_type": "string",
@@ -132,7 +132,7 @@
         "value": "Anywhere in the world, except the United States of America, Canada and their respective protectorates and territories"
     },
     "u_insured_abn": {
-        "confidence": 0.95,
+        "confidence": 0.945,
         "parsers": [],
         "raw_value": null,
         "raw_value_type": "float",
@@ -149,7 +149,7 @@
         "value": null
     },
     "u_insured_name": {
-        "confidence": 0.91,
+        "confidence": 0.908,
         "parsers": [],
         "raw_value": "MMMMMMM and/or subsidiary",
         "raw_value_type": "string",
@@ -166,7 +166,7 @@
         "value": "MMMMMMM and/or subsidiary"
     },
     "u_insurer_name": {
-        "confidence": 0.904,
+        "confidence": 0.903,
         "parsers": [],
         "raw_value": "Chubb Insurance Australia Limited",
         "raw_value_type": "string",
@@ -183,7 +183,7 @@
         "value": "Chubb Insurance Australia Limited"
     },
     "u_liability": {
-        "confidence": 0.791,
+        "confidence": 0.847,
         "parsers": [
             {
                 "input": null,
@@ -209,7 +209,7 @@
         "value": null
     },
     "u_liability_aggregate": {
-        "confidence": 0.951,
+        "confidence": 0.949,
         "parsers": [
             {
                 "input": null,
@@ -250,10 +250,5 @@
             }
         ],
         "value": "09PP555444"
-    },
-    "u_registration_country": {
-        "parsers": [],
-        "validations": [],
-        "value": null
     }
 }
