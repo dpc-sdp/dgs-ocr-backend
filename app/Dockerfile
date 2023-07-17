@@ -1,4 +1,8 @@
 FROM python:3.10-alpine3.17
+
+ARG modelid
+ENV modelid $modelid
+
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools wheel
 RUN apk add g++ linux-headers libffi-dev # Dependencies for building various Python packages
