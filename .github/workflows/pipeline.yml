@@ -42,6 +42,8 @@ jobs:
       image: mcr.microsoft.com/azure-cli
     needs: build
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
       - name: deploy
         run: |
           az extension add -n containerapp
