@@ -120,7 +120,6 @@ class AnalysedData(BaseEntity):
         return jsonify(self())
 
     model_id: str = Column(VARCHAR)
-    created_by: str = Column(VARCHAR)
     expected_fields = Column(JSON)
     extraction_stats = Column(JSON)
     custom_model_analysis = Column(JSON)

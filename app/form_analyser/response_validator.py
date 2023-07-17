@@ -35,7 +35,8 @@ class ResponseValidator:
             .add_field('u_insured_name', self._get('u_insured_name'),
                        validations=[FieldValidation.REQUIRED])\
             .add_field('u_insured_abn', self._get('u_insured_abn'),
-                       validations=[FieldValidation.REQUIRED])\
+                       validations=[FieldValidation.REQUIRED],
+                       parser=[FieldParser.ABN])\
             .add_field('u_document_date', self._get('u_document_date'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.DATE])\
