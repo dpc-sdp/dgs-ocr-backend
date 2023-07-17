@@ -7,7 +7,7 @@ services:
     volumes:
         - ./:/app
     environment:
-      - modelid=neural_v1_6
+      - modelid=neural_v1_7
     ports:
       - "5001:5000" # Port 5000 causes problems on macOS due to conflict with some system service
   formsapp-dapr:
