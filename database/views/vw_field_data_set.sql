@@ -1,13 +1,17 @@
-CREATE VIEW vw_field_data_set AS  WITH raw AS (
+create or replace VIEW vw_field_data_set AS  
+
+WITH raw AS (
          SELECT api_response.request_id,
             api_response.model_id,
             api_response.created_on,
+            api_response.cover_type,
             api_response.expected_fields
            FROM api_response
         ), keys AS (
          SELECT raw.request_id,
             raw.model_id,
             raw.created_on,
+            raw.cover_type,
             raw.expected_fields,
             field_key.field_key
            FROM raw,
@@ -16,6 +20,7 @@ CREATE VIEW vw_field_data_set AS  WITH raw AS (
          SELECT keys.request_id,
             keys.model_id,
             keys.created_on,
+            keys.cover_type,
             keys.expected_fields,
             keys.field_key,
             keys.expected_fields -> keys.field_key AS result_set
@@ -24,6 +29,7 @@ CREATE VIEW vw_field_data_set AS  WITH raw AS (
  SELECT key_result_set.request_id,
     key_result_set.model_id,
     key_result_set.created_on,
+    lower(key_result_set.cover_type),
     key_result_set.expected_fields,
     key_result_set.field_key,
     key_result_set.result_set,
@@ -34,4 +40,5 @@ CREATE VIEW vw_field_data_set AS  WITH raw AS (
     json_array_length(key_result_set.result_set -> 'parsers'::text) AS parsers,
     json_array_length(key_result_set.result_set -> 'validations'::text) AS validations
    FROM key_result_set;
+
 

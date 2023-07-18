@@ -54,6 +54,7 @@ def analyse_custom_model_for_parsing(fr_analysis: dict) -> dict:
                     input=fields[key]['content'],
                     input_type=fields[key]['value_type'],
                     confidence=fields[key]['confidence'],
+                    bounding_regions=fields[key]['bounding_regions'],
                 )()
             })
 

@@ -37,8 +37,8 @@ SELECT
         policy_no AS u_policy_number,
         policy_start_date AS u_cover_start_date,
         policy_end_date AS u_cover_end_date,
-        professional_liability_amount AS u_liability,
-        professional_aggregate AS u_liability_aggregate
+        public_liability_amount AS u_liability,
+        public_aggregate AS u_liability_aggregate
 FROM expected_results
 WHERE btrim(public) = 'yes'
 
@@ -59,7 +59,7 @@ SELECT
         policy_no AS u_policy_number,
         policy_start_date AS u_cover_start_date,
         policy_end_date AS u_cover_end_date,
-        professional_liability_amount AS u_liability,
-        professional_aggregate AS u_liability_aggregate
+        product_liability_amount AS u_liability,
+        product_aggregate AS u_liability_aggregate
 FROM expected_results
 WHERE btrim(product) = 'yes'

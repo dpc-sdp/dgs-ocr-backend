@@ -1,4 +1,4 @@
-create or replace VIEW performance_metrics AS  
+create or replace VIEW vw_performance_metrics AS  
 
 SELECT 
 	vw_transform_expected_fields.doc_name,
@@ -22,7 +22,9 @@ SELECT
      LEFT JOIN vw_latest_api_request ON 
         vw_latest_api_request.request_id = vw_field_data_set.request_id 
         AND vw_latest_api_request.model_id = vw_field_data_set.model_id
+        AND vw_latest_api_request.cover_type = vw_field_data_set.cover_type
      JOIN vw_transform_expected_fields ON 
         concat(btrim(vw_transform_expected_fields.doc_name::text), '.png') = btrim(vw_latest_api_request.file_name::text) 
-        AND vw_transform_expected_fields.mapped_field_name = vw_field_data_set.field_key;
+        AND vw_transform_expected_fields.mapped_field_name = vw_field_data_set.field_key
+        AND vw_transform_expected_fields.cover_type = vw_field_data_set.cover_type;
 

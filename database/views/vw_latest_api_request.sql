@@ -3,7 +3,7 @@ SELECT subquery.max_created_date,
     subquery.request_id,
     subquery.file_name,
     subquery.model_id,
-    subquery.cover_type
+    lower(subquery.cover_type) as cover_type
    FROM ( SELECT max(api_requests.created_on) AS max_created_date,
             api_requests.request_id,
             api_requests.file_name,

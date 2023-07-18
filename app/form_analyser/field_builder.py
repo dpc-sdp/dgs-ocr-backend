@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Any
 
 from utils.logger_util import LoggerUtil
 from form_analyser.services.parser_factory import ParserFactory
@@ -17,6 +16,7 @@ class RawFieldValue:
     input: str
     input_type: str
     confidence: str
+    bounding_regions: any
 
     def __call__(self) -> dict:
         return {
