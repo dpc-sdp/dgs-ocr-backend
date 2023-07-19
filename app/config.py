@@ -56,3 +56,11 @@ def get_sn_username():
 def get_sn_password():
     with DaprClient() as client:
         return client.get_secret(store_name='form-recognizer-secret-store', key='snpassword').secret['snpassword']
+
+
+def get_environment():
+    return os.environ.get('environment', 'production')
+
+
+def get_debugMode():
+    return os.environ.get('debug', 'False')
