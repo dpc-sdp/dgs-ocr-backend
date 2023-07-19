@@ -1,6 +1,7 @@
 
 import json
 import os
+import datetime
 
 from flask import Flask, request, jsonify
 
@@ -39,14 +40,13 @@ logger = LoggerUtil("API")
 
 # Replace with your own secret key
 app.config['JWT_SECRET_KEY'] = config.get_jwt_secret_key()
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=30)
 jwt = JWTManager(app)
 jwt._set_error_handler_callbacks(app)
 
 # Get an ID for this run of the program
 instance_id = BaseUtils.get_a_unique_id()
 print(f'instance_id = {instance_id}')
-
-# This is a smoke test
 
 
 @app.errorhandler(404)
