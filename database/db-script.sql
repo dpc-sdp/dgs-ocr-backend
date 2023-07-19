@@ -1,4 +1,4 @@
-CREATE TABLE "api_response" (
+CREATE TABLE IF NOT EXISTS "api_response" (
   "id" serial NOT NULL,
   PRIMARY KEY ("id"),
   "request_id" VARCHAR(50) NULL,
@@ -11,7 +11,20 @@ CREATE TABLE "api_response" (
   "raw_from_formrecognizer" json NULL
 );
 
-CREATE TABLE "api_response_stats" (
+CREATE TABLE IF NOT EXISTS "abc" (
+  "id" serial NOT NULL,
+  PRIMARY KEY ("id"),
+  "request_id" VARCHAR(50) NULL,
+  "model_id" VARCHAR(50) NULL,
+  "cover_type" VARCHAR(50) NULL,
+  "created_on" timestamp NOT NULL,
+  "expected_fields" json NULL,
+  "extraction_stats" json NULL,
+  "custom_model_analysis" json NULL,
+  "raw_from_formrecognizer" json NULL
+);
+
+CREATE TABLE IF NOT EXISTS "api_response_stats" (
   "id" serial NOT NULL,
   PRIMARY KEY ("id"),
   "request_id" VARCHAR(50) NULL,
@@ -24,7 +37,7 @@ CREATE TABLE "api_response_stats" (
   "servicenow_feedback" VARCHAR(50) NULL
 );
 
-CREATE TABLE "api_requests" (
+CREATE TABLE IF NOT EXISTS "api_requests" (
   "id" serial NOT NULL,
   PRIMARY KEY ("id"),
   "request_id" VARCHAR(50) NULL,
@@ -42,7 +55,7 @@ CREATE TABLE "api_requests" (
 );
 
 
-CREATE TABLE "expected_results" (
+CREATE TABLE IF NOT EXISTS "expected_results" (
   "id" serial NOT NULL,
   PRIMARY KEY ("id"),
   "request_id" VARCHAR(50) NULL,
