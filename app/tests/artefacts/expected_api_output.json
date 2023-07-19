@@ -133,7 +133,16 @@
     },
     "u_insured_abn": {
         "confidence": 0.945,
-        "parsers": [],
+        "parsers": [
+            {
+                "input": null,
+                "message": "Invalid value: cannot parse null",
+                "name": "AbnParser",
+                "output": "",
+                "parms": "",
+                "status": 0
+            }
+        ],
         "raw_value": null,
         "raw_value_type": "float",
         "validations": [
