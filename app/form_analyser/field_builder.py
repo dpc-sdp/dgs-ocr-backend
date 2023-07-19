@@ -16,7 +16,6 @@ class RawFieldValue:
     input: str
     input_type: str
     confidence: str
-    bounding_regions: any
 
     def __call__(self) -> dict:
         return {

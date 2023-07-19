@@ -1,6 +1,7 @@
 
 import json
 import os
+import datetime
 
 from flask import Flask, request, jsonify
 
@@ -31,24 +32,21 @@ expectedResultsRepo = ExpectedResultsRepository()
 # Flask app
 app = Flask(__name__)
 CORS(app)
-app.debug = True
-app.config['DEBUG'] = True
-app.config['FLASK_ENV'] = 'development'
-app.use_reloader = True
-
+app.debug = eval(config.get_debugMode())
+app.config['DEBUG'] = eval(config.get_debugMode())
+app.config['FLASK_ENV'] = config.get_environment()
 
 logger = LoggerUtil("API")
 
 # Replace with your own secret key
 app.config['JWT_SECRET_KEY'] = config.get_jwt_secret_key()
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=30)
 jwt = JWTManager(app)
 jwt._set_error_handler_callbacks(app)
 
 # Get an ID for this run of the program
 instance_id = BaseUtils.get_a_unique_id()
 print(f'instance_id = {instance_id}')
-
-# This is a smoke test
 
 
 @app.errorhandler(404)
@@ -146,7 +144,7 @@ def analyze_doc():
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
-    apiRequestRepository.save_to_db(response)
+    # apiRequestRepository.save_to_db(response)
 
     return response.get_json()
 
@@ -166,15 +164,15 @@ def analyze():
     return response.get_json()
 
 
-@app.route('/list-models', methods=['GET'])
-def list_models():
+# @app.route('/list-models', methods=['GET'])
+# def list_models():
 
-    admin = recognizer_service._setup_admin()
-    models = admin.list_document_models()
-    print(models)
+#     admin = recognizer_service._setup_admin()
+#     models = admin.list_document_models()
+#     print(models)
 
-    model_list = [m.model_id for m in models]
-    return jsonify(model_list)
+#     model_list = [m.model_id for m in models]
+#     return jsonify(model_list)
 
 
 logger.info('Form recognizer initiated!')

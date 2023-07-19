@@ -2,7 +2,6 @@ Flask>=2.0.2
 dapr
 azure-identity
 azure-ai-formrecognizer
-Jinja2
 gunicorn
 jsonpath2
 arrow

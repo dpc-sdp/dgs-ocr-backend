@@ -90,10 +90,10 @@ class AbnParser(ParserService):
     """ Child of AbnParser and used to parse ABN from strings"""
 
     def __str__(self) -> str:
-        return 'CurrencyParser'
+        return 'AbnParser'
 
     def parse(self, value) -> ValidationDto:
-        print("Currency Parser started")
+        print("ABN Parser started")
         validationResponseDto = ValidationDto(
             name=str(self),  input=value, parms="", output="", status="", message="")
 
@@ -116,4 +116,4 @@ class AbnParser(ParserService):
 
     @property
     def value_type(self):
-        return 'currency'
+        return 'abn'
