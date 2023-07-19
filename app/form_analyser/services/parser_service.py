@@ -84,3 +84,36 @@ class CurrencyParser(ParserService):
     @property
     def value_type(self):
         return 'currency'
+
+
+class AbnParser(ParserService):
+    """ Child of AbnParser and used to parse ABN from strings"""
+
+    def __str__(self) -> str:
+        return 'CurrencyParser'
+
+    def parse(self, value) -> ValidationDto:
+        print("Currency Parser started")
+        validationResponseDto = ValidationDto(
+            name=str(self),  input=value, parms="", output="", status="", message="")
+
+        validationResponseDto.output = None
+        if value is not None:
+            try:
+                if value.strip() != "":
+                    # Remove spaces
+                    string = value.replace(" ", "")
+                    # Remove special characters
+                    string = re.sub(r"[^\w\s]", "", string)
+                    # Trim the text
+                    string = string.strip()
+                    validationResponseDto.output = string
+
+            except (ValueError, TypeError):
+                validationResponseDto.message = 'Failed to parse abn'
+
+        return validationResponseDto
+
+    @property
+    def value_type(self):
+        return 'currency'

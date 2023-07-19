@@ -3,6 +3,7 @@ CREATE TABLE "api_response" (
   PRIMARY KEY ("id"),
   "request_id" VARCHAR(50) NULL,
   "model_id" VARCHAR(50) NULL,
+  "cover_type" VARCHAR(50) NULL,
   "created_on" timestamp NOT NULL,
   "expected_fields" json NULL,
   "extraction_stats" json NULL,

@@ -1,7 +1,10 @@
 #!/bin/bash
 
 API_ENDPOINT="http://localhost:5001/analyze-doc?sample_doc=true"    # Replace with your API endpoint
-FOLDER_PATH="/Users/manoj/Downloads/OneDrive_1_30-05-2023"                        # Replace with the path to your folder
+
+FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/public"                        # Replace with the path to your folder
+# FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/professional"                        # Replace with the path to your folder
+# FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/product"                        # Replace with the path to your folder
 LOG_FILE="upload_log_$(date +%Y%m%d%H%M%S).txt"                     # Replace with the desired log file name
 
 # Function to format the time in minutes and seconds

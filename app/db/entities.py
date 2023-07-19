@@ -97,6 +97,7 @@ class AnalysedData(BaseEntity):
 
     def __init__(self, request: ApiRequest, raw_response, process_runtime):
         self.request_id = request.request_id
+        self.cover_type = request.cover_type
         self.created_on = datetime.now()
         self.model_id = request.model_id
         self.custom_model_analysis = parsers.analyse_custom_model_for_parsing(
@@ -120,7 +121,7 @@ class AnalysedData(BaseEntity):
         return jsonify(self())
 
     model_id: str = Column(VARCHAR)
-    created_by: str = Column(VARCHAR)
+    cover_type: str = Column(EnumType(CoverTypes))
     expected_fields = Column(JSON)
     extraction_stats = Column(JSON)
     custom_model_analysis = Column(JSON)

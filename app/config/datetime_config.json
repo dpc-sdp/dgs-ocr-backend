@@ -50,12 +50,15 @@
         "H:mm YYYY-MM-DD",
         "YYYY-MM-DD",
         "DD MMMM, YYYY",
+        "D MMMM, YYYY",
         "DD MMM YYYY",
+        "D MMM YYYY",
         "MMM DD, YYYY",
         "MMMM DD, YYYY",
         "MM/DD/YYYY",
         "DD/M/YYYY",
         "MMMM D, YYYY",
+        "MMMM DD, YYYY",
         "D/M/YYYY"
     ]
 }
