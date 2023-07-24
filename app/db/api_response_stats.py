@@ -3,11 +3,12 @@
 from datetime import datetime
 from dataclasses import dataclass
 from sqlalchemy import Column, VARCHAR
-from db.base_entity import BaseEntity
+from sqlalchemy import Column, Integer, DateTime, VARCHAR
+from conf.extensions import db
 
 
 @dataclass
-class ApiResponseStats(BaseEntity):
+class ApiResponseStats(db.Model):
     """ This class is used to store all the Analisis data """
     __tablename__ = 'api_response_stats'
 
@@ -23,6 +24,10 @@ class ApiResponseStats(BaseEntity):
     def is_none_or_empty(self, value):
         return value is None or value == ''
 
+
+    id: int = Column(Integer, primary_key=True)
+    request_id: str = Column(VARCHAR, unique=True)
+    created_on: datetime = Column(DateTime, default=datetime.now)
     field_name: str = Column(VARCHAR)
     confidence: str = Column(VARCHAR)
     f_value: str = Column(VARCHAR)

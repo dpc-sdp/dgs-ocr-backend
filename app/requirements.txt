@@ -8,8 +8,8 @@ arrow
 colorlog
 jsonschema
 flask-cors
-SQLAlchemy
 psycopg2-binary
 openpyxl
 flask_jwt_extended
+Flask-SQLAlchemy
 flask-swagger-ui

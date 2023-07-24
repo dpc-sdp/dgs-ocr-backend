@@ -1,35 +1,28 @@
 
-import json
-import os
+import config
 import datetime
 
-from flask import Flask, request, jsonify, send_file
 
-from db.entities import ApiRequest, AnalysedData, ExpectedResults
-from db.repositories import ApiRequestRepository, AnalysedDataRepository, ExpectedResultsRepository
+from flask_cors import CORS
+from flask import Flask, request, send_file
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt
 
-from flask import Flask, request
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
-
-import config
+from db.entities import ApiRequest
+from db.repositories import ApiRequestRepository
 from form_analyser.form_recognizer_service import FormRecognizerService
 from form_analyser.response_handler import ResponseHandler
 from utils.key_authentication import api_key_required
 from utils.base_utils import BaseUtils
-from flask_cors import CORS
 from utils.logger_util import LoggerUtil
 from utils.mask_utils import mask_username
 from utils.api_response import ApiResponse
-
-from flask_swagger_ui import get_swaggerui_blueprint
+from conf.swagger_ui_blueprint import swagger_ui_blueprint, SWAGGER_URL
+from conf.extensions import db, jwt
 
 
 # Initialise the Services
 recognizer_service = FormRecognizerService()
 apiRequestRepository = ApiRequestRepository()
-analysedDataRepo = AnalysedDataRepository()
-expectedResultsRepo = ExpectedResultsRepository()
-
 
 # Flask app
 app = Flask(__name__)
@@ -37,45 +30,44 @@ CORS(app)
 app.debug = eval(config.get_debugMode())
 app.config['DEBUG'] = eval(config.get_debugMode())
 app.config['FLASK_ENV'] = config.get_environment()
+app.config["SQLALCHEMY_DATABASE_URI"] = config.get_azure_form_recognizer_db_uri()
+app.config['JWT_SECRET_KEY'] = config.get_jwt_secret_key()
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=30)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-SWAGGER_URL = '/swagger'
-API_URL = '/swagger.json'
-
-# Create a Swagger UI blueprint
-swagger_ui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL
-)
-
-# Register the blueprint in your Flask app
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
+db.init_app(app)
+jwt.init_app(app)
+jwt._set_error_handler_callbacks(app)
+
+# Create an application context
+with app.app_context():
+    # Perform database operations within the application context
+    db.create_all()
 
 logger = LoggerUtil("API")
 
-# Replace with your own secret key
-app.config['JWT_SECRET_KEY'] = config.get_jwt_secret_key()
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=30)
-jwt = JWTManager(app)
-jwt._set_error_handler_callbacks(app)
-
 # Get an ID for this run of the program
 instance_id = BaseUtils.get_a_unique_id()
-print(f'instance_id = {instance_id}')
+logger.info(f'instance_id = {instance_id}')
 
 
 @app.errorhandler(404)
 def page_not_found(error):
+    logger.error(error)
     return ApiResponse().custom(404, 'not_found', 'Page not found')
 
 
 @app.errorhandler(400)
 def bad_request(error):
+    logger.error(error)
     return ApiResponse().badRequest(error.description)
 
 
 @app.errorhandler(408)
 def timeout_handler(error):
+    logger.error(error)
     return ApiResponse().timeout(error.description)
 
 
@@ -86,13 +78,13 @@ def expired_token_callback(header, date):
 
 @app.errorhandler(Exception)
 def exception_handler(error):
-    print(error)
+    logger.error(error)
     return ApiResponse().error('An internal server error occurred!')
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    print(error)
+    logger.error(error)
     return ApiResponse().error('An internal server error occurred!')
 
 
