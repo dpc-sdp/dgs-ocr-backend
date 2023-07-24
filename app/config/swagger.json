@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: OCR App
+  version: 1.0.0
+  contact: {}
+paths:
+  /api/user/login:
+    post:
+      summary: login
+      description: login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: 'password'
+                username:
+                  type: string
+                  example: 'username'
+            example:
+              password: 'password'
+              username: 'username'
+      responses:
+        '200':
+          description: ''
+  /api/user/logout:
+    post:
+      summary: logout
+      description: logout
+      operationId: logout
+      responses:
+        '200':
+          description: ''
+  /api/ocr/analyze:
+    post:
+      summary: analyze-api-key
+      description: analyze-api-key
+      operationId: analyzeApiKey
+      parameters:
+        - name: X-API-Key
+          in: header
+          schema:
+            type: string
+            example: 'apikey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content_length:
+                  type: number
+                  example: 123
+                cover_type:
+                  type: string
+                  example: professional
+                file:
+                  type: string
+                  example: base64 encodred file
+                filename:
+                  type: string
+                  example: abc.png
+            example:
+              content_length: 123
+              cover_type: professional
+              file: base64 encodred file
+              filename: abc.png
+      responses:
+        '200':
+          description: ''
+  /api/ocr/analyze-doc:
+    post:
+      summary: analyze-doc
+      description: analyze-doc
+      operationId: analyzeDoc
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                cover_type:
+                  type: string
+                  example: product
+                doc:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: ''
+tags: []

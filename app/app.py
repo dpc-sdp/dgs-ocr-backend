@@ -3,7 +3,7 @@ import json
 import os
 import datetime
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 
 from db.entities import ApiRequest, AnalysedData, ExpectedResults
 from db.repositories import ApiRequestRepository, AnalysedDataRepository, ExpectedResultsRepository
@@ -21,6 +21,8 @@ from utils.logger_util import LoggerUtil
 from utils.mask_utils import mask_username
 from utils.api_response import ApiResponse
 
+from flask_swagger_ui import get_swaggerui_blueprint
+
 
 # Initialise the Services
 recognizer_service = FormRecognizerService()
@@ -35,6 +37,22 @@ CORS(app)
 app.debug = eval(config.get_debugMode())
 app.config['DEBUG'] = eval(config.get_debugMode())
 app.config['FLASK_ENV'] = config.get_environment()
+
+SWAGGER_URL = '/swagger'
+API_URL = '/swagger.json'
+
+# Create a Swagger UI blueprint
+swagger_ui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Your Flask App"  # Customize the Swagger UI page title if needed
+    }
+)
+
+# Register the blueprint in your Flask app
+app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+
 
 logger = LoggerUtil("API")
 
@@ -81,7 +99,12 @@ def internal_server_error(error):
     return ApiResponse().error('An internal server error occurred!')
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/swagger.json')
+def serve_swagger_json():
+    return send_file('config/swagger.json')
+
+
+@app.route('/api/user/login', methods=['POST'])
 def login():
     logger.info("User login initiated!")
     # Get the username and password from the request
@@ -108,7 +131,7 @@ def login():
 BLOCKLIST = set()
 
 
-@app.route('/logout', methods=['POST'])
+@app.route('/api/user/logout', methods=['POST'])
 @jwt_required()  # Requires a valid JWT token
 def logout():
     logger.info("User logout initiated!")
@@ -135,7 +158,7 @@ def unauthorized_callback(callback):
     return ApiResponse().unauthorized('Authentication required')
 
 
-@app.route('/analyze-doc', methods=['POST'])
+@app.route('/api/ocr/analyze-doc', methods=['POST'])
 @jwt_required()
 def analyze_doc():
     apiRequest = ApiRequest(request, False)
@@ -149,7 +172,7 @@ def analyze_doc():
     return response.get_json()
 
 
-@app.route('/analyze', methods=['POST'])
+@app.route('/api/ocr/analyze', methods=['POST'])
 @jwt_required()
 @api_key_required
 def analyze():
@@ -162,17 +185,6 @@ def analyze():
     # apiRequestRepository.save_to_db(response)
 
     return response.get_json()
-
-
-# @app.route('/list-models', methods=['GET'])
-# def list_models():
-
-#     admin = recognizer_service._setup_admin()
-#     models = admin.list_document_models()
-#     print(models)
-
-#     model_list = [m.model_id for m in models]
-#     return jsonify(model_list)
 
 
 logger.info('Form recognizer initiated!')
