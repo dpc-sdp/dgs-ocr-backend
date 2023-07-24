@@ -44,10 +44,7 @@ API_URL = '/swagger.json'
 # Create a Swagger UI blueprint
 swagger_ui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Your Flask App"  # Customize the Swagger UI page title if needed
-    }
+    API_URL
 )
 
 # Register the blueprint in your Flask app
@@ -104,7 +101,7 @@ def serve_swagger_json():
     return send_file('config/swagger.json')
 
 
-@app.route('/api/user/login', methods=['POST'])
+@app.route('/api/v1/user/login', methods=['POST'])
 def login():
     logger.info("User login initiated!")
     # Get the username and password from the request
@@ -131,7 +128,7 @@ def login():
 BLOCKLIST = set()
 
 
-@app.route('/api/user/logout', methods=['POST'])
+@app.route('/api/v1/user/logout', methods=['POST'])
 @jwt_required()  # Requires a valid JWT token
 def logout():
     logger.info("User logout initiated!")
@@ -158,7 +155,7 @@ def unauthorized_callback(callback):
     return ApiResponse().unauthorized('Authentication required')
 
 
-@app.route('/api/ocr/analyze-doc', methods=['POST'])
+@app.route('/api/v1/ocr/analyze-doc', methods=['POST'])
 @jwt_required()
 def analyze_doc():
     apiRequest = ApiRequest(request, False)
@@ -172,7 +169,7 @@ def analyze_doc():
     return response.get_json()
 
 
-@app.route('/api/ocr/analyze', methods=['POST'])
+@app.route('/api/v1/ocr/analyze', methods=['POST'])
 @jwt_required()
 @api_key_required
 def analyze():

@@ -1,95 +1,202 @@
-openapi: 3.0.3
-info:
-  title: OCR App
-  version: 1.0.0
-  contact: {}
-paths:
-  /api/user/login:
-    post:
-      summary: login
-      description: login
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                password:
-                  type: string
-                  example: 'password'
-                username:
-                  type: string
-                  example: 'username'
-            example:
-              password: 'password'
-              username: 'username'
-      responses:
-        '200':
-          description: ''
-  /api/user/logout:
-    post:
-      summary: logout
-      description: logout
-      operationId: logout
-      responses:
-        '200':
-          description: ''
-  /api/ocr/analyze:
-    post:
-      summary: analyze-api-key
-      description: analyze-api-key
-      operationId: analyzeApiKey
-      parameters:
-        - name: X-API-Key
-          in: header
-          schema:
-            type: string
-            example: 'apikey'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                content_length:
-                  type: number
-                  example: 123
-                cover_type:
-                  type: string
-                  example: professional
-                file:
-                  type: string
-                  example: base64 encodred file
-                filename:
-                  type: string
-                  example: abc.png
-            example:
-              content_length: 123
-              cover_type: professional
-              file: base64 encodred file
-              filename: abc.png
-      responses:
-        '200':
-          description: ''
-  /api/ocr/analyze-doc:
-    post:
-      summary: analyze-doc
-      description: analyze-doc
-      operationId: analyzeDoc
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                cover_type:
-                  type: string
-                  example: product
-                doc:
-                  type: string
-                  format: binary
-      responses:
-        '200':
-          description: ''
-tags: []
+{
+  "swagger": "2.0",
+  "basePath": "/",
+  "paths": {
+    "/api/v1/ocr/analyze": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_analyze_resource",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "required": true,
+            "in": "header",
+            "type": "string",
+            "description": "Uploaded file"
+          },
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UploadRequest"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "ocr"
+        ]
+      }
+    },
+    "/api/v1/ocr/analyze-doc": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_upload_resource",
+        "parameters": [
+          {
+            "name": "cover_type",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Cover type fo the uploading document [public, product or professional]"
+          },
+          {
+            "name": "doc",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Uploaded file"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "tags": [
+          "ocr"
+        ]
+      }
+    },
+    "/api/v1/user/login": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        },
+        "operationId": "post_login_resource",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/api/v1/user/logout": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "user_logout",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "user"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API",
+    "version": "1.0"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "tags": [
+    {
+      "name": "user",
+      "description": "User access controls"
+    },
+    {
+      "name": "ocr",
+      "description": "OCR apis"
+    }
+  ],
+  "definitions": {
+    "LoginRequest": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password"
+        }
+      },
+      "type": "object"
+    },
+    "LoginResponse": {
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "Access Token"
+        }
+      },
+      "type": "object"
+    },
+    "UploadRequest": {
+      "properties": {
+        "cover_type": {
+          "type": "string",
+          "description": "Cover type fo the uploading document [public, product or professional]"
+        },
+        "filename": {
+          "type": "string",
+          "description": "Name of the uploaded file"
+        },
+        "content_length": {
+          "type": "number",
+          "description": "Sized of the uploading file"
+        },
+        "file": {
+          "type": "string",
+          "description": "Base64 encoded file"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "responses": {
+    "ParseError": {
+      "description": "When a mask can't be parsed"
+    },
+    "MaskError": {
+      "description": "When any error occurs on mask"
+    }
+  }
+}
