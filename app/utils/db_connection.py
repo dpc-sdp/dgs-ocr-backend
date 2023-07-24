@@ -10,7 +10,7 @@ class DbConnection:
         self.session = Session()
 
     def getDbUrl(self):
-        return config.get_azure_form_recognizer_db_uri()
+        return config.get_db_uri()
 
     def getConnection(self):
         return self.session

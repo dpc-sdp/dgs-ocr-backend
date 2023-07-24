@@ -28,8 +28,8 @@ class ApiResponse():
         return self.custom(408, 'timeout', message)
 
     def json(self) -> dict:
-        return jsonify({
+        return 401, {
             'code': self.code,
             'type': self.type,
             'msg': self.message
-        }), self.code
+        }

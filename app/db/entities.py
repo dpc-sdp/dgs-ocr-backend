@@ -11,19 +11,18 @@ from utils.model_stats import ModelStats
 from form_analyser.enums.cover_types import CoverTypes
 from sqlalchemy.ext.declarative import declarative_base
 from form_analyser.response_validator import ResponseValidator
-from sqlalchemy import Column, JSON, Enum as EnumType, VARCHAR
+from sqlalchemy import Column, JSON, Integer, DateTime, Enum as EnumType, VARCHAR
 from form_analyser.enums.cover_types import CoverTypes
-from db.base_entity import BaseEntity
+from extensions import db
 
 
 @dataclass
-class ApiRequest(BaseEntity):
+class ApiRequest(db.Model):
     """ This class is used to store all the request realated data"""
     __tablename__ = 'api_requests'
 
     def __init__(self, request: request, idBase64: bool):
-        self.request_id = BaseUtils.get_a_unique_id().strip()
-        self.created_on = datetime.now()
+        self.request_id = BaseUtils.get_a_unique_id()
         if request is not None:
             user_agent = request.headers.get('User-Agent')
 
@@ -75,6 +74,9 @@ class ApiRequest(BaseEntity):
 
             self.model_id = self.model_id.strip()
 
+    id: int = Column(Integer, primary_key=True)
+    request_id: str = Column(VARCHAR, unique=True)
+    created_on: datetime = Column(DateTime, default=datetime.now)
     model_id: str = Column(VARCHAR)
     agent: str = Column(VARCHAR)
     file_name: str = Column(VARCHAR)
@@ -91,14 +93,13 @@ class ApiRequest(BaseEntity):
 
 
 @dataclass
-class AnalysedData(BaseEntity):
+class AnalysedData(db.Model):
     """ This class is used to store all the Analisis data """
     __tablename__ = 'api_response'
 
     def __init__(self, request: ApiRequest, raw_response, process_runtime):
         self.request_id = request.request_id
         self.cover_type = request.cover_type
-        self.created_on = datetime.now()
         self.model_id = request.model_id
         self.custom_model_analysis = parsers.analyse_custom_model_for_parsing(
             raw_response)
@@ -120,67 +121,12 @@ class AnalysedData(BaseEntity):
     def get_json(self):
         return jsonify(self())
 
+    id: int = Column(Integer, primary_key=True)
+    request_id: str = Column(VARCHAR, unique=True)
+    created_on: datetime = Column(DateTime, default=datetime.now)
     model_id: str = Column(VARCHAR)
     cover_type: str = Column(EnumType(CoverTypes))
     expected_fields = Column(JSON)
     extraction_stats = Column(JSON)
     custom_model_analysis = Column(JSON)
     raw_from_formrecognizer = Column(JSON)
-
-
-@ dataclass
-class ExpectedResults(BaseEntity):
-    """ This class is used to store all the Analisis data """
-    __tablename__ = 'expected_results'
-
-    def __init__(self, agent, file_name, row):
-        self.request_id = BaseUtils.get_a_unique_id().strip()
-        self.created_on = datetime.now()
-        self.agent = agent
-        self.file_name = file_name
-        self.doc_name = self.replaceNanToNone(str(row[0]))
-        self.insurer_name = self.replaceNanToNone(str(row[1]))
-        self.insurer_names = self.replaceNanToNone(str(row[2]))
-        self.insurer_abn = self.replaceNanToNone(str(row[3]))
-        self.document_issue_date = self.replaceNanToNone(str(row[4]))
-        self.policy_no = self.replaceNanToNone(str(row[5]))
-        self.professional = self.replaceNanToNone(str(row[6]))
-        self.public = self.replaceNanToNone(str(row[7]))
-        self.product = self.replaceNanToNone(str(row[8]))
-        self.policy_start_date = self.replaceNanToNone(str(row[10]))
-        self.policy_end_date = self.replaceNanToNone(str(row[11]))
-        self.policy_currency = self.replaceNanToNone(str(row[12]))
-        self.professional_liability_amount = self.replaceNanToNone(
-            str(row[13]))
-        self.professional_aggregate = self.replaceNanToNone(str(row[14]))
-        self.public_liability_amount = self.replaceNanToNone(str(row[15]))
-        self.product_liability_amount = self.replaceNanToNone(str(row[16]))
-        self.product_aggregate = self.replaceNanToNone(str(row[17]))
-        self.region = self.replaceNanToNone(str(row[18]))
-
-    def replaceNanToNone(self, val):
-        if val is not None:
-            if val.strip() == 'nan':
-                return None
-        return val.strip()
-
-    agent: str = Column(VARCHAR)
-    file_name: str = Column(VARCHAR)
-    doc_name: str = Column(VARCHAR)
-    insurer_name: str = Column(VARCHAR)
-    insurer_names: str = Column(VARCHAR)
-    insurer_abn: str = Column(VARCHAR)
-    document_issue_date: str = Column(VARCHAR)
-    policy_no: str = Column(VARCHAR)
-    professional: str = Column(VARCHAR)
-    public: str = Column(VARCHAR)
-    product: str = Column(VARCHAR)
-    policy_start_date: str = Column(VARCHAR)
-    policy_end_date: str = Column(VARCHAR)
-    policy_currency: str = Column(VARCHAR)
-    professional_liability_amount: str = Column(VARCHAR)
-    professional_aggregate: str = Column(VARCHAR)
-    public_liability_amount: str = Column(VARCHAR)
-    product_liability_amount: str = Column(VARCHAR)
-    product_aggregate: str = Column(VARCHAR)
-    region: str = Column(VARCHAR)
