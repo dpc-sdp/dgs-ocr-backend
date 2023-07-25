@@ -184,4 +184,4 @@ def analyze():
     return response.get_json()
 
 
-logger.info('Form recognizer initiated!')
+logger.info('Form recognizer initiated!..')
