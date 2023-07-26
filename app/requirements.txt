@@ -12,4 +12,3 @@ SQLAlchemy
 psycopg2-binary
 openpyxl
 flask_jwt_extended
-flask-swagger-ui
