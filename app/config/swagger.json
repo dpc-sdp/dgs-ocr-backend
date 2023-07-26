@@ -1,12 +1,42 @@
 {
   "swagger": "2.0",
   "basePath": "/",
+  "info": {
+    "title": "API",
+    "description": "API Documnetuon for the Form Recognizer service",
+    "version": "1.0"
+  },
+  "schemes": [
+    "https"
+  ],
   "paths": {
     "/api/v1/ocr/analyze": {
       "post": {
+        "description": "API used by the service-now team",
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UploadResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/400ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/401ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/500ErrorResponse"
+            }
           }
         },
         "operationId": "post_analyze_resource",
@@ -39,9 +69,31 @@
     },
     "/api/v1/ocr/analyze-doc": {
       "post": {
+        "description": "API used by the react UI",
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UploadResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/400ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/401ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/500ErrorResponse"
+            }
           }
         },
         "operationId": "post_upload_resource",
@@ -82,6 +134,24 @@
             "schema": {
               "$ref": "#/definitions/LoginResponse"
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/400ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/401ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/500ErrorResponse"
+            }
           }
         },
         "operationId": "post_login_resource",
@@ -105,6 +175,18 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/401ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/500ErrorResponse"
+            }
           }
         },
         "operationId": "user_logout",
@@ -118,10 +200,6 @@
         ]
       }
     }
-  },
-  "info": {
-    "title": "API",
-    "version": "1.0"
   },
   "produces": [
     "application/json"
@@ -169,6 +247,57 @@
       },
       "type": "object"
     },
+    "400ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 400
+        },
+        "type": {
+          "type": "string",
+          "example": "bad_request"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "500ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 500
+        },
+        "type": {
+          "type": "string",
+          "example": "internal_error"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "401ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 401
+        },
+        "type": {
+          "type": "string",
+          "example": "unauthorized"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
     "UploadRequest": {
       "properties": {
         "cover_type": {
@@ -189,6 +318,101 @@
         }
       },
       "type": "object"
+    },
+    "UploadResponse": {
+      "type": "object",
+      "properties": {
+        "created_on": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expected_fields": {
+          "type": "object",
+          "properties": {
+            "service_now_key": {
+              "type": "object",
+              "properties": {
+                "confidence": {
+                  "type": "number"
+                },
+                "parsers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "input": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "output": {
+                        "type": "string"
+                      },
+                      "parms": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                },
+                "raw_value": {
+                  "type": "string"
+                },
+                "raw_value_type": {
+                  "type": "string"
+                },
+                "validations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "input": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "output": {
+                        "type": "string"
+                      },
+                      "parms": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                },
+                "value": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "value_type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "model_id": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        }
+      }
     }
   },
   "responses": {

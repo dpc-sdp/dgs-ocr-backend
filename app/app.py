@@ -21,8 +21,6 @@ from utils.logger_util import LoggerUtil
 from utils.mask_utils import mask_username
 from utils.api_response import ApiResponse
 
-from flask_swagger_ui import get_swaggerui_blueprint
-
 
 # Initialise the Services
 recognizer_service = FormRecognizerService()
@@ -37,19 +35,6 @@ CORS(app)
 app.debug = eval(config.get_debugMode())
 app.config['DEBUG'] = eval(config.get_debugMode())
 app.config['FLASK_ENV'] = config.get_environment()
-
-SWAGGER_URL = '/swagger'
-API_URL = '/swagger.json'
-
-# Create a Swagger UI blueprint
-swagger_ui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL
-)
-
-# Register the blueprint in your Flask app
-app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
-
 
 logger = LoggerUtil("API")
 
@@ -96,6 +81,7 @@ def internal_server_error(error):
     return ApiResponse().error('An internal server error occurred!')
 
 
+@jwt_required()
 @app.route('/swagger.json')
 def serve_swagger_json():
     return send_file('config/swagger.json')
