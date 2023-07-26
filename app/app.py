@@ -1,12 +1,11 @@
 
-import json
-import os
 import datetime
+import time
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, send_file
 
-from db.entities import ApiRequest, AnalysedData, ExpectedResults
-from db.repositories import ApiRequestRepository, AnalysedDataRepository, ExpectedResultsRepository
+from db.entities import ApiRequest
+from db.repositories import ApiRequestRepository
 
 from flask import Flask, request
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt
@@ -25,8 +24,6 @@ from utils.api_response import ApiResponse
 # Initialise the Services
 recognizer_service = FormRecognizerService()
 apiRequestRepository = ApiRequestRepository()
-analysedDataRepo = AnalysedDataRepository()
-expectedResultsRepo = ExpectedResultsRepository()
 
 
 # Flask app
@@ -144,13 +141,21 @@ def unauthorized_callback(callback):
 @app.route('/api/v1/ocr/analyze-doc', methods=['POST'])
 @jwt_required()
 def analyze_doc():
+    start_time = time.time()
     apiRequest = ApiRequest(request, False)
+    logger.info(
+        f"Initiated analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
     # apiRequestRepository.save_to_db(response)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.info(
+        f"Completed analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(end_time)} in: {round(elapsed_time, 2)} seconds")
 
     return response.get_json()
 
@@ -159,13 +164,20 @@ def analyze_doc():
 @jwt_required()
 @api_key_required
 def analyze():
+    start_time = time.time()
     apiRequest = ApiRequest(request, True)
+    logger.info(
+        f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
     # apiRequestRepository.save_to_db(response)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.info(
+        f"Completed analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(end_time)} in: {round(elapsed_time, 2)} seconds")
 
     return response.get_json()
 

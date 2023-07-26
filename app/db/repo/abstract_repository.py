@@ -13,14 +13,14 @@ class AbstractRepository(Generic[T], ABC):
         self.session = connection.getConnection()
 
     def save_to_db(self, model: T) -> bool:
-        self.logger.info(f'Creating data: {model}')
+        self.logger.debug(f'Creating data: {model}')
         self.session.add(model)
         self.session.commit()
         self.logger.info('Data saved successfully')
         return True
 
     def update(self, model: T) -> bool:
-        self.logger.info(f'Updating data: {model}')
+        self.logger.debug(f'Updating data: {model}')
         self.session.commit()
         self.logger.info('Data updated successfully')
         return True
