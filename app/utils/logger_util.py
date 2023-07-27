@@ -12,7 +12,6 @@ class LoggerUtil:
             self.logger.setLevel(logging.DEBUG)
         else:
             self.logger.setLevel(logging.INFO)
-        # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         formatter = colorlog.ColoredFormatter(
             '%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             log_colors={

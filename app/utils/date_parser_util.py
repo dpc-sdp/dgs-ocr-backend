@@ -4,7 +4,7 @@ from form_analyser.services.response_dto import ValidationDto
 from form_analyser.enums.action_status import ActionStatus
 from utils.logger_util import LoggerUtil
 
-with open("./config/datetime_config.json") as f:
+with open("./conf/datetime_config.json") as f:
     config = json.load(f)
 
 date_formats = config["date_formats"]

@@ -21,7 +21,6 @@ class ParseDate(ParserService):
     def parse(self, value) -> ValidationDto:
         validationResponseDto = ValidationDto(
             name=str(self),  input=value, parms="", output="", status="", message="")
-        print(validationResponseDto.input)
         return date_parser_util.extract_date(validationResponseDto)
 
     @property
@@ -63,7 +62,6 @@ class CurrencyParser(ParserService):
         return 'CurrencyParser'
 
     def parse(self, value) -> ValidationDto:
-        print("Currency Parser started")
         validationResponseDto = ValidationDto(
             name=str(self),  input=value, parms="", output="", status="", message="")
 
@@ -93,7 +91,6 @@ class AbnParser(ParserService):
         return 'AbnParser'
 
     def parse(self, value) -> ValidationDto:
-        print("ABN Parser started")
         validationResponseDto = ValidationDto(
             name=str(self),  input=value, parms="", output="", status="", message="")
 

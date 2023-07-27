@@ -7,19 +7,20 @@ from flask import request, jsonify, abort
 from datetime import datetime
 from dataclasses import dataclass
 from utils.base_utils import BaseUtils
-from utils.model_stats import ModelStats
 from form_analyser.enums.cover_types import CoverTypes
 from sqlalchemy.ext.declarative import declarative_base
 from form_analyser.response_validator import ResponseValidator
-from sqlalchemy import Column, JSON, Enum as EnumType, VARCHAR
+from sqlalchemy import Column, JSON, Integer, DateTime, Enum as EnumType, VARCHAR
 from form_analyser.enums.cover_types import CoverTypes
-from db.base_entity import BaseEntity
+from conf.extensions import db
+from utils.logger_util import LoggerUtil
 
 
 @dataclass
-class ApiRequest(BaseEntity):
+class ApiRequest(db.Model):
     """ This class is used to store all the request realated data"""
     __tablename__ = 'api_requests'
+    logger = LoggerUtil("ApiRequest")
 
     def __init__(self, request: request, idBase64: bool):
         self.request_id = BaseUtils.get_a_unique_id().strip()
@@ -35,12 +36,13 @@ class ApiRequest(BaseEntity):
                 self.vaildateRequest(request, 'cover_type',
                                      'Cover type required!')
                 cover_type = request.json['cover_type']
-                print(f'{cover_type} cover type selected')
+                self.logger.info(f'{cover_type} cover type selected')
                 self.vaildateRequest(request, 'file', 'File required!')
                 try:
                     self.file_bytes = base64.b64decode(request.json['file'])
                 except Exception as e:
-                    print(f"An error occurred during file parsing: {str(e)}")
+                    self.logger.error(
+                        f"An error occurred during file parsing: {str(e)}")
                     abort(400, 'Invalid file!')
 
                 self.vaildateRequest(request, 'filename', 'Filename required!')
@@ -51,17 +53,18 @@ class ApiRequest(BaseEntity):
                 self.file_size = request.json['content_length']
             else:
                 cover_type = request.form.get('cover_type', None)
-                print(f'{cover_type} cover type selected')
+                self.logger.info(f'{cover_type} cover type selected')
                 doc = request.files.get('doc')
-                self.file_bytes = doc.read() if doc is not None else None
-                self.file_name = doc.filename
-                self.file_size = doc.content_length
+                if (doc is not None):
+                    self.file_bytes = doc.read() if doc is not None else None
+                    self.file_name = doc.filename
+                    self.file_size = doc.content_length
 
             try:
                 self.cover_type = CoverTypes(cover_type)
-                print(f'{self.cover_type} cover type selected')
+                self.logger.info(f'{self.cover_type} cover type selected')
             except Exception as e:
-                print(
+                self.logger.error(
                     f"An error occurred while parsing cover type: {str(e)}")
                 abort(400, 'Invalid cover type!')
 
@@ -75,6 +78,9 @@ class ApiRequest(BaseEntity):
 
             self.model_id = self.model_id.strip()
 
+    id: int = Column(Integer, primary_key=True)
+    request_id: str = Column(VARCHAR, unique=True)
+    created_on: datetime = Column(DateTime, default=datetime.now)
     model_id: str = Column(VARCHAR)
     agent: str = Column(VARCHAR)
     file_name: str = Column(VARCHAR)
@@ -91,7 +97,7 @@ class ApiRequest(BaseEntity):
 
 
 @dataclass
-class AnalysedData(BaseEntity):
+class AnalysedData(db.Model):
     """ This class is used to store all the Analisis data """
     __tablename__ = 'api_response'
 
@@ -104,7 +110,6 @@ class AnalysedData(BaseEntity):
             raw_response)
         self.expected_fields = ResponseValidator(
             self.custom_model_analysis, request.cover_type).build_response(request.request_id)
-        # self.extraction_stats = ModelStats().analyse_stats(raw_response, process_runtime)
         self.raw_from_formrecognizer = raw_response
 
     def __call__(self) -> dict:
@@ -113,74 +118,18 @@ class AnalysedData(BaseEntity):
             "created_on": self.created_on,
             "model_id": self.model_id,
             "expected_fields": self.expected_fields
-            # "extraction_stats": self.extraction_stats,
             # "raw_from_formrecognizer": self.raw_from_formrecognizer
         }
 
     def get_json(self):
         return jsonify(self())
 
+    id: int = Column(Integer, primary_key=True)
+    request_id: str = Column(VARCHAR, unique=True)
+    created_on: datetime = Column(DateTime, default=datetime.now)
     model_id: str = Column(VARCHAR)
     cover_type: str = Column(EnumType(CoverTypes))
     expected_fields = Column(JSON)
     extraction_stats = Column(JSON)
     custom_model_analysis = Column(JSON)
     raw_from_formrecognizer = Column(JSON)
-
-
-@ dataclass
-class ExpectedResults(BaseEntity):
-    """ This class is used to store all the Analisis data """
-    __tablename__ = 'expected_results'
-
-    def __init__(self, agent, file_name, row):
-        self.request_id = BaseUtils.get_a_unique_id().strip()
-        self.created_on = datetime.now()
-        self.agent = agent
-        self.file_name = file_name
-        self.doc_name = self.replaceNanToNone(str(row[0]))
-        self.insurer_name = self.replaceNanToNone(str(row[1]))
-        self.insurer_names = self.replaceNanToNone(str(row[2]))
-        self.insurer_abn = self.replaceNanToNone(str(row[3]))
-        self.document_issue_date = self.replaceNanToNone(str(row[4]))
-        self.policy_no = self.replaceNanToNone(str(row[5]))
-        self.professional = self.replaceNanToNone(str(row[6]))
-        self.public = self.replaceNanToNone(str(row[7]))
-        self.product = self.replaceNanToNone(str(row[8]))
-        self.policy_start_date = self.replaceNanToNone(str(row[10]))
-        self.policy_end_date = self.replaceNanToNone(str(row[11]))
-        self.policy_currency = self.replaceNanToNone(str(row[12]))
-        self.professional_liability_amount = self.replaceNanToNone(
-            str(row[13]))
-        self.professional_aggregate = self.replaceNanToNone(str(row[14]))
-        self.public_liability_amount = self.replaceNanToNone(str(row[15]))
-        self.product_liability_amount = self.replaceNanToNone(str(row[16]))
-        self.product_aggregate = self.replaceNanToNone(str(row[17]))
-        self.region = self.replaceNanToNone(str(row[18]))
-
-    def replaceNanToNone(self, val):
-        if val is not None:
-            if val.strip() == 'nan':
-                return None
-        return val.strip()
-
-    agent: str = Column(VARCHAR)
-    file_name: str = Column(VARCHAR)
-    doc_name: str = Column(VARCHAR)
-    insurer_name: str = Column(VARCHAR)
-    insurer_names: str = Column(VARCHAR)
-    insurer_abn: str = Column(VARCHAR)
-    document_issue_date: str = Column(VARCHAR)
-    policy_no: str = Column(VARCHAR)
-    professional: str = Column(VARCHAR)
-    public: str = Column(VARCHAR)
-    product: str = Column(VARCHAR)
-    policy_start_date: str = Column(VARCHAR)
-    policy_end_date: str = Column(VARCHAR)
-    policy_currency: str = Column(VARCHAR)
-    professional_liability_amount: str = Column(VARCHAR)
-    professional_aggregate: str = Column(VARCHAR)
-    public_liability_amount: str = Column(VARCHAR)
-    product_liability_amount: str = Column(VARCHAR)
-    product_aggregate: str = Column(VARCHAR)
-    region: str = Column(VARCHAR)

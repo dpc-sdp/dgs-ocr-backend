@@ -1,5 +1,5 @@
 from utils.logger_util import LoggerUtil
-from db.entities import ApiRequest, AnalysedData, ExpectedResults
+from db.entities import ApiRequest, AnalysedData
 from db.repo.abstract_repository import AbstractRepository
 
 
@@ -14,14 +14,6 @@ class ApiRequestRepository(AbstractRepository[ApiRequest]):
 class AnalysedDataRepository(AbstractRepository[AnalysedData]):
 
     logger = LoggerUtil("AnalysedDataRepository")
-
-    def __init__(self):
-        super().__init__(self.logger)
-
-
-class ExpectedResultsRepository(AbstractRepository[ExpectedResults]):
-
-    logger = LoggerUtil("ExpectedResultsRepository")
 
     def __init__(self):
         super().__init__(self.logger)
