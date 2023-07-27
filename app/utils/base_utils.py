@@ -9,3 +9,6 @@ class BaseUtils:
 
     def get_timestamp():
         return datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
+    def get_datefromtime(time):
+        return datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')

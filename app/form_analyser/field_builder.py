@@ -63,13 +63,10 @@ class FieldBuilder:
             value = item["value"]
 
             if parsers is not None:
-                print(parsers)
                 for parser in parsers:
                     p: ParserService = ParserFactory.create_parser(type=parser)
                     if p:
                         if value is not None:
-                            print(value)
-                            print(p)
                             res: ValidationDto = p.parse(value)
                             item["value"] = res.output
                             item["value_type"] = p.value_type

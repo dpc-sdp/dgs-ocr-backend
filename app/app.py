@@ -1,4 +1,7 @@
 
+import datetime
+import time
+
 import config
 import datetime
 
@@ -16,13 +19,13 @@ from utils.base_utils import BaseUtils
 from utils.logger_util import LoggerUtil
 from utils.mask_utils import mask_username
 from utils.api_response import ApiResponse
-from conf.swagger_ui_blueprint import swagger_ui_blueprint, SWAGGER_URL
 from conf.extensions import db, jwt
 
 
 # Initialise the Services
 recognizer_service = FormRecognizerService()
 apiRequestRepository = ApiRequestRepository()
+
 
 # Flask app
 app = Flask(__name__)
@@ -35,7 +38,6 @@ app.config['JWT_SECRET_KEY'] = config.get_jwt_secret_key()
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=30)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
 db.init_app(app)
 jwt.init_app(app)
@@ -55,7 +57,6 @@ logger.info(f'instance_id = {instance_id}')
 
 @app.errorhandler(404)
 def page_not_found(error):
-    logger.error(error)
     return ApiResponse().custom(404, 'not_found', 'Page not found')
 
 
@@ -88,7 +89,8 @@ def internal_server_error(error):
     return ApiResponse().error('An internal server error occurred!')
 
 
-@app.route('/swagger.json')
+@jwt_required()
+@app.route('/api/swagger.json')
 def serve_swagger_json():
     return send_file('config/swagger.json')
 
@@ -150,13 +152,21 @@ def unauthorized_callback(callback):
 @app.route('/api/v1/ocr/analyze-doc', methods=['POST'])
 @jwt_required()
 def analyze_doc():
+    start_time = time.time()
     apiRequest = ApiRequest(request, False)
+    logger.info(
+        f"Initiated analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
     # apiRequestRepository.save_to_db(response)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.info(
+        f"Completed analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(end_time)} in: {round(elapsed_time, 2)} seconds")
 
     return response.get_json()
 
@@ -165,13 +175,20 @@ def analyze_doc():
 @jwt_required()
 @api_key_required
 def analyze():
+    start_time = time.time()
     apiRequest = ApiRequest(request, True)
+    logger.info(
+        f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
     # apiRequestRepository.save_to_db(response)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.info(
+        f"Completed analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(end_time)} in: {round(elapsed_time, 2)} seconds")
 
     return response.get_json()
 

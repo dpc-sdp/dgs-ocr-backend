@@ -13,12 +13,14 @@ from form_analyser.response_validator import ResponseValidator
 from sqlalchemy import Column, JSON, Integer, DateTime, Enum as EnumType, VARCHAR
 from form_analyser.enums.cover_types import CoverTypes
 from conf.extensions import db
+from utils.logger_util import LoggerUtil
 
 
 @dataclass
 class ApiRequest(db.Model):
     """ This class is used to store all the request realated data"""
     __tablename__ = 'api_requests'
+    logger = LoggerUtil("ApiRequest")
 
     def __init__(self, request: request, idBase64: bool):
         self.request_id = BaseUtils.get_a_unique_id().strip()
@@ -34,12 +36,13 @@ class ApiRequest(db.Model):
                 self.vaildateRequest(request, 'cover_type',
                                      'Cover type required!')
                 cover_type = request.json['cover_type']
-                print(f'{cover_type} cover type selected')
+                self.logger.info(f'{cover_type} cover type selected')
                 self.vaildateRequest(request, 'file', 'File required!')
                 try:
                     self.file_bytes = base64.b64decode(request.json['file'])
                 except Exception as e:
-                    print(f"An error occurred during file parsing: {str(e)}")
+                    self.logger.error(
+                        f"An error occurred during file parsing: {str(e)}")
                     abort(400, 'Invalid file!')
 
                 self.vaildateRequest(request, 'filename', 'Filename required!')
@@ -50,17 +53,18 @@ class ApiRequest(db.Model):
                 self.file_size = request.json['content_length']
             else:
                 cover_type = request.form.get('cover_type', None)
-                print(f'{cover_type} cover type selected')
+                self.logger.info(f'{cover_type} cover type selected')
                 doc = request.files.get('doc')
-                self.file_bytes = doc.read() if doc is not None else None
-                self.file_name = doc.filename
-                self.file_size = doc.content_length
+                if (doc is not None):
+                    self.file_bytes = doc.read() if doc is not None else None
+                    self.file_name = doc.filename
+                    self.file_size = doc.content_length
 
             try:
                 self.cover_type = CoverTypes(cover_type)
-                print(f'{self.cover_type} cover type selected')
+                self.logger.info(f'{self.cover_type} cover type selected')
             except Exception as e:
-                print(
+                self.logger.error(
                     f"An error occurred while parsing cover type: {str(e)}")
                 abort(400, 'Invalid cover type!')
 

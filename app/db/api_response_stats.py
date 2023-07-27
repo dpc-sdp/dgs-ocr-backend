@@ -16,7 +16,7 @@ class ApiResponseStats(db.Model):
         self.request_id = request_id
         self.created_on = datetime.now()
         self.field_name = field_name
-        self.f_value = item["value"]
+        # self.f_value = item["value"]
         self.confidence = item["confidence"]
         self.is_value_blank = self.is_none_or_empty(item["raw_value"])
         self.is_failed_to_parse = self.is_none_or_empty(item["value"])

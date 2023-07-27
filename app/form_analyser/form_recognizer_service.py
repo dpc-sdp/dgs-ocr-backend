@@ -7,6 +7,7 @@ import config
 from form_analyser.response_handler import ResponseHandler
 from utils.logger_util import LoggerUtil
 from db.entities import ApiRequest
+from utils.base_utils import BaseUtils
 from flask import abort
 
 
@@ -34,6 +35,8 @@ class FormRecognizerService:
         """Core request method."""
 
         start_time = time.time()
+        self.logger.info(
+            f"Initiated cognitive analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
         analyze_document = None
         try:
             analyze_document = self.client.begin_analyze_document(
@@ -42,17 +45,17 @@ class FormRecognizerService:
             print(f"An error occurred during file parsing: {str(e)}")
             abort(400, 'The file is corrupted or format is unsupported!')
 
-        self.logger.info('Blocking until analysis result comes back')
+        self.logger.info('Blocking until cognitive analysis result comes back')
         analyze_document.wait(40)  # Wait for max 20 seconds
 
         if analyze_document.status() != 'succeeded':
-            msg = f'Analysis timeout. status = {analyze_document.status()}'
+            msg = f'Cognitive Analysis timeout. status = {analyze_document.status()}'
             self.logger.error(msg)
             abort(408, msg)
-
-        process_runtime = round(time.time() - start_time, 2)
+        end_time = time.time()
+        process_runtime = round(end_time - start_time, 2)
         self.logger.info(
-            f'Analysis succeeded. {analyze_document.status()} {analyze_document}')
+            f"Completed cognitive analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(end_time)} in: {round(process_runtime, 2)} seconds with status: {analyze_document.status()}")
 
         result = analyze_document.result().to_dict()
 
