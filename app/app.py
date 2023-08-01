@@ -99,8 +99,8 @@ def serve_swagger_json():
 def login():
     logger.info("User login initiated!")
     # Get the username and password from the request
-    username = request.json.get('username')
-    password = request.json.get('password')
+    username = request.headers.get('username')
+    password = request.headers.get('password')
     maskedUsername = mask_username(username)
     logger.debug(f'Received login request for username: {maskedUsername}')
 

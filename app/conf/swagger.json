@@ -157,12 +157,18 @@
         "operationId": "post_login_resource",
         "parameters": [
           {
-            "name": "payload",
+            "name": "username",
             "required": true,
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/LoginRequest"
-            }
+            "in": "header",
+            "type": "string",
+            "description": "username"
+          },
+          {
+            "name": "password",
+            "required": true,
+            "in": "header",
+            "type": "string",
+            "description": "password"
           }
         ],
         "tags": [
@@ -225,19 +231,6 @@
     }
   ],
   "definitions": {
-    "LoginRequest": {
-      "properties": {
-        "username": {
-          "type": "string",
-          "description": "Username"
-        },
-        "password": {
-          "type": "string",
-          "description": "Password"
-        }
-      },
-      "type": "object"
-    },
     "LoginResponse": {
       "properties": {
         "access_token": {
