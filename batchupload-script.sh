@@ -1,10 +1,10 @@
 #!/bin/bash
 
-API_ENDPOINT="http://localhost:5001/analyze-doc?sample_doc=true"    # Replace with your API endpoint
-
-FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/public"                        # Replace with the path to your folder
-# FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/professional"                        # Replace with the path to your folder
-# FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/product"                        # Replace with the path to your folder
+API_ENDPOINT="http://localhost:5001/api/v1/ocr/analyze-doc?sample_doc=true"    # Replace with your API endpoint
+# cover_type="public"
+# cover_type="professional"
+cover_type="product"
+FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/$cover_type"                        # Replace with the path to your folder
 LOG_FILE="upload_log_$(date +%Y%m%d%H%M%S).txt"                     # Replace with the desired log file name
 
 # Function to format the time in minutes and seconds
@@ -24,7 +24,7 @@ upload_document() {
   
   # Call the API endpoint and measure the time taken
   start_time=$(date +%s.%N)
-  response_code=$(curl -s -o /dev/null -w "%{http_code}" -F "doc=@$file_path" "$API_ENDPOINT")
+  response_code=$(curl -s -o /dev/null -w "%{http_code}" -F "doc=@$file_path" -F "cover_type=$cover_type" "$API_ENDPOINT")
   end_time=$(date +%s.%N)
   
   # Calculate the time taken for the response
