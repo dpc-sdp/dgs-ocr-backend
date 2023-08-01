@@ -2,6 +2,8 @@ import re
 from abc import abstractmethod
 from utils import date_parser_util
 from form_analyser.services.response_dto import ValidationDto
+from dateutil.parser import parse
+from form_analyser.enums.action_status import ActionStatus
 
 
 class ParserService:
@@ -21,11 +23,47 @@ class ParseDate(ParserService):
     def parse(self, value) -> ValidationDto:
         validationResponseDto = ValidationDto(
             name=str(self),  input=value, parms="", output="", status="", message="")
-        return date_parser_util.extract_date(validationResponseDto)
+        # return date_parser_util.extract_date(validationResponseDto)
+        if value is not None:
+            try:
+                value = remove_text_ignore_case(value, "local standard time")
+                value = remove_text_ignore_case(value, "(")
+                value = remove_text_ignore_case(value, ")")
+                validationResponseDto.output = parse_datetime(
+                    value).strftime("%Y-%m-%d %H:%M")
+                validationResponseDto.status = ActionStatus.SUCCESS.value
+            except (ValueError, TypeError):
+                validationResponseDto.output = None
+                validationResponseDto.message = 'Failed to parse number'
+
+            if validationResponseDto.output is None:
+                validationResponseDto = date_parser_util.extract_date(
+                    validationResponseDto)
+
+        return validationResponseDto
 
     @property
     def value_type(self):
         return 'datetime'
+
+
+def parse_datetime(date_time_str):
+    try:
+        date_time_obj = parse(date_time_str)
+        return date_time_obj
+    except ValueError:
+        # If the string cannot be parsed, you can raise an exception or return None, depending on your needs.
+        raise ValueError("Unable to parse the date and time string.")
+
+
+def remove_text_ignore_case(sentence, text_to_remove):
+    # Create a regular expression pattern with the 're.IGNORECASE' flag to ignore case
+    pattern = re.compile(re.escape(text_to_remove), re.IGNORECASE)
+
+    # Use the 'sub' function to replace occurrences of the text_to_remove with an empty string
+    result_sentence = pattern.sub('', sentence)
+
+    return result_sentence
 
 
 class ParseNumbers(ParserService):

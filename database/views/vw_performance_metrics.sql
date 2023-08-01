@@ -24,7 +24,8 @@ SELECT
         AND vw_latest_api_request.model_id = vw_field_data_set.model_id
         AND vw_latest_api_request.cover_type = vw_field_data_set.cover_type
      JOIN vw_transform_expected_fields ON 
-        concat(btrim(vw_transform_expected_fields.doc_name::text), '.png') = btrim(vw_latest_api_request.file_name::text) 
+--        concat(btrim(vw_transform_expected_fields.doc_name::text), '.png') = btrim(vw_latest_api_request.file_name::text) 
+        btrim(vw_transform_expected_fields.doc_name::text) = SUBSTRING(btrim(vw_latest_api_request.file_name::text) FROM 1 FOR POSITION('.' IN btrim(vw_latest_api_request.file_name::text)) - 1) 
         AND vw_transform_expected_fields.mapped_field_name = vw_field_data_set.field_key
         AND vw_transform_expected_fields.cover_type = vw_field_data_set.cover_type;
 

@@ -1,5 +1,8 @@
 {
     "date_formats": [
+        "DD/MM/YYYY h.mm A",
+        "D/MM/YYYY h.mm A",
+        "D/M/YYYY h.mm A",
         "h.mm A D MMMM YYYY",
         "H.mm D MMMM YYYY",
         "h:mm A D MMMM YYYY",
