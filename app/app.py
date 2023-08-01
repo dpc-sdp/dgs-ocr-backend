@@ -92,7 +92,7 @@ def internal_server_error(error):
 @jwt_required()
 @app.route('/api/swagger.json')
 def serve_swagger_json():
-    return send_file('config/swagger.json')
+    return send_file('conf/swagger.json')
 
 
 @app.route('/api/v1/user/login', methods=['POST'])
