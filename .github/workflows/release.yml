@@ -32,18 +32,18 @@ jobs:
         run: |
           dir=$(pwd)
           git config --global --add safe.directory $dir
-          build=$(git rev-parse --abbrev-ref HEAD) && build=${build//\//-}
+          BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}
           az extension add -n containerapp
           az login --service-principal --username ${{secrets.UAT_ARM_CLIENT_ID}} --password ${{secrets.UAT_ARM_CLIENT_SECRET}} --tenant ${{secrets.UAT_ARM_TENANT_ID}}
           az account set --subscription ${{secrets.UAT_ARM_SUBSCRIPTION_ID}}
-          az containerapp update -n $UAT_APP_RESOURCE_NAME -g $UAT_APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$build
+          az containerapp update -n $UAT_APP_RESOURCE_NAME -g $UAT_APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$BUILD
       - name: production
         if: ${{ inputs.env == 'production'}}
         run: |
           dir=$(pwd)
           git config --global --add safe.directory $dir
-          build=$(git rev-parse --abbrev-ref HEAD) && build=${build//\//-}
+          BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}
           az extension add -n containerapp
           az login --service-principal --username ${{secrets.PROD_ARM_CLIENT_ID}} --password ${{secrets.PROD_ARM_CLIENT_SECRET}} --tenant ${{secrets.PROD_ARM_TENANT_ID}}
           az account set --subscription ${{secrets.PROD_ARM_SUBSCRIPTION_ID}}
-          az containerapp update -n $PROD_APP_RESOURCE_NAME -g $PROD_APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$build
+          az containerapp update -n $PROD_APP_RESOURCE_NAME -g $PROD_APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$BUILD
