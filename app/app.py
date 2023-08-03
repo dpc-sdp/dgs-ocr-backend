@@ -150,7 +150,7 @@ def unauthorized_callback(callback):
 
 
 @app.route('/api/v1/ocr/analyze-doc', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def analyze_doc():
     start_time = time.time()
     apiRequest = ApiRequest(request, False)
@@ -161,7 +161,7 @@ def analyze_doc():
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
-    # apiRequestRepository.save_to_db(response)
+    apiRequestRepository.save_to_db(response)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
