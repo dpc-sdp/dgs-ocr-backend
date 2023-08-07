@@ -29,11 +29,11 @@ class ParseDate(ParserService):
                 value = remove_text_ignore_case(
                     value, ["local standard time", "(", ")", "on", "at"])
                 validationResponseDto.output = parse_datetime(
-                    value).strftime("%Y-%m-%d %H:%M")
+                    value).strftime("%Y-%m-%d")
                 validationResponseDto.status = ActionStatus.SUCCESS.value
             except (ValueError, TypeError):
                 validationResponseDto.output = None
-                validationResponseDto.message = 'Failed to parse number'
+                validationResponseDto.message = 'Failed to parse date'
 
             if validationResponseDto.output is None:
                 validationResponseDto = date_parser_util.extract_date(
@@ -44,6 +44,38 @@ class ParseDate(ParserService):
     @property
     def value_type(self):
         return 'datetime'
+
+
+class ParseTime(ParserService):
+    """ Child of ParserService and used to parse date strings to time"""
+
+    def __str__(self) -> str:
+        return 'ParseTime'
+
+    def parse(self, value) -> ValidationDto:
+        validationResponseDto = ValidationDto(
+            name=str(self),  input=value, parms="", output="", status="", message="")
+        # return date_parser_util.extract_date(validationResponseDto)
+        if value is not None:
+            try:
+                value = remove_text_ignore_case(
+                    value, ["local standard time", "(", ")", "on", "at"])
+                validationResponseDto.output = parse_datetime(
+                    value).strftime("%H:%M")
+                validationResponseDto.status = ActionStatus.SUCCESS.value
+            except (ValueError, TypeError):
+                validationResponseDto.output = "00:00"
+                validationResponseDto.message = 'Failed to parse time'
+
+            if validationResponseDto.output is None:
+                validationResponseDto = date_parser_util.extract_date(
+                    validationResponseDto)
+
+        return validationResponseDto
+
+    @property
+    def value_type(self):
+        return 'date'
 
 
 def parse_datetime(date_time_str):

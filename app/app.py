@@ -72,6 +72,12 @@ def timeout_handler(error):
     return ApiResponse().timeout(error.description)
 
 
+@jwt.invalid_token_loader
+def invalid_token_callback(error):
+    logger.error(error)
+    return ApiResponse().unauthorized('Invalid Token!')
+
+
 @jwt.expired_token_loader
 def expired_token_callback(header, date):
     return ApiResponse().unauthorized('Token has expired!')
@@ -150,10 +156,10 @@ def unauthorized_callback(callback):
 
 
 @app.route('/api/v1/ocr/analyze-doc', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def analyze_doc():
     start_time = time.time()
-    apiRequest = ApiRequest(request, False)
+    apiRequest = ApiRequest(request, False, True)
     logger.info(
         f"Initiated analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
@@ -161,7 +167,7 @@ def analyze_doc():
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
-    apiRequestRepository.save_to_db(response)
+    # apiRequestRepository.save_to_db(response)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -176,7 +182,29 @@ def analyze_doc():
 @api_key_required
 def analyze():
     start_time = time.time()
-    apiRequest = ApiRequest(request, True)
+    apiRequest = ApiRequest(request, True, True)
+    logger.info(
+        f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
+    apiRequestRepository.save_to_db(apiRequest)
+
+    result: ResponseHandler = recognizer_service.analyze(apiRequest)
+
+    response = result.parse()
+    # apiRequestRepository.save_to_db(response)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.info(
+        f"Completed analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(end_time)} in: {round(elapsed_time, 2)} seconds")
+
+    return response.get_json()
+
+
+@app.route('/api/v2/ocr/analyze', methods=['POST'])
+@jwt_required()
+@api_key_required
+def analyzev2():
+    start_time = time.time()
+    apiRequest = ApiRequest(request, True, False)
     logger.info(
         f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)

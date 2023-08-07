@@ -5,3 +5,4 @@ class CoverTypes(Enum):
     PUBLIC = 'public'
     PRODUCT = 'product'
     PROFESSIONAL = 'professional'
+    NONE = None
