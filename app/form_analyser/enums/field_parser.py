@@ -6,3 +6,4 @@ class FieldParser(Enum):
     NUMBERS = 2
     CURRENCY = 3
     ABN = 4
+    TIME = 5

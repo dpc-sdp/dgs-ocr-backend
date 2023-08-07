@@ -26,15 +26,14 @@ class ParseDate(ParserService):
         # return date_parser_util.extract_date(validationResponseDto)
         if value is not None:
             try:
-                value = remove_text_ignore_case(value, "local standard time")
-                value = remove_text_ignore_case(value, "(")
-                value = remove_text_ignore_case(value, ")")
+                value = remove_text_ignore_case(
+                    value, ["local standard time", "(", ")", "on", "at"])
                 validationResponseDto.output = parse_datetime(
-                    value).strftime("%Y-%m-%d %H:%M")
+                    value).strftime("%Y-%m-%d")
                 validationResponseDto.status = ActionStatus.SUCCESS.value
             except (ValueError, TypeError):
                 validationResponseDto.output = None
-                validationResponseDto.message = 'Failed to parse number'
+                validationResponseDto.message = 'Failed to parse date'
 
             if validationResponseDto.output is None:
                 validationResponseDto = date_parser_util.extract_date(
@@ -47,6 +46,38 @@ class ParseDate(ParserService):
         return 'datetime'
 
 
+class ParseTime(ParserService):
+    """ Child of ParserService and used to parse date strings to time"""
+
+    def __str__(self) -> str:
+        return 'ParseTime'
+
+    def parse(self, value) -> ValidationDto:
+        validationResponseDto = ValidationDto(
+            name=str(self),  input=value, parms="", output="", status="", message="")
+        # return date_parser_util.extract_date(validationResponseDto)
+        if value is not None:
+            try:
+                value = remove_text_ignore_case(
+                    value, ["local standard time", "(", ")", "on", "at"])
+                validationResponseDto.output = parse_datetime(
+                    value).strftime("%H:%M")
+                validationResponseDto.status = ActionStatus.SUCCESS.value
+            except (ValueError, TypeError):
+                validationResponseDto.output = "00:00"
+                validationResponseDto.message = 'Failed to parse time'
+
+            if validationResponseDto.output is None:
+                validationResponseDto = date_parser_util.extract_date(
+                    validationResponseDto)
+
+        return validationResponseDto
+
+    @property
+    def value_type(self):
+        return 'time'
+
+
 def parse_datetime(date_time_str):
     try:
         date_time_obj = parse(date_time_str)
@@ -56,14 +87,16 @@ def parse_datetime(date_time_str):
         raise ValueError("Unable to parse the date and time string.")
 
 
-def remove_text_ignore_case(sentence, text_to_remove):
-    # Create a regular expression pattern with the 're.IGNORECASE' flag to ignore case
-    pattern = re.compile(re.escape(text_to_remove), re.IGNORECASE)
+def remove_text_ignore_case(sentence, texts_to_remove):
+    # Iterate through each text in the texts_to_remove array
+    for text in texts_to_remove:
+        # Create a regular expression pattern with the 're.IGNORECASE' flag to ignore case
+        pattern = re.compile(re.escape(text), re.IGNORECASE)
 
-    # Use the 'sub' function to replace occurrences of the text_to_remove with an empty string
-    result_sentence = pattern.sub('', sentence)
+        # Use the 'sub' function to replace occurrences of the text with an empty string
+        sentence = pattern.sub('', sentence)
 
-    return result_sentence
+    return sentence
 
 
 class ParseNumbers(ParserService):

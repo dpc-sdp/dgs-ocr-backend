@@ -1,11 +1,9 @@
 #!/bin/bash
 
 API_ENDPOINT="http://localhost:5001/api/v1/ocr/analyze-doc?sample_doc=true"    # Replace with your API endpoint
-# cover_type="public"
-# cover_type="professional"
-cover_type="product"
+cover_type=$1
 FOLDER_PATH="/Users/manoj/Documents/DPC/test_data/$cover_type"                        # Replace with the path to your folder
-LOG_FILE="upload_log_$(date +%Y%m%d%H%M%S).txt"                     # Replace with the desired log file name
+LOG_FILE="upload_log_${cover_type}_$(date +%Y%m%d%H%M%S).txt"                   # Replace with the desired log file name
 
 # Function to format the time in minutes and seconds
 format_time() {

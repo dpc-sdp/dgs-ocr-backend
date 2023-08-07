@@ -22,7 +22,7 @@ class ApiRequest(db.Model):
     __tablename__ = 'api_requests'
     logger = LoggerUtil("ApiRequest")
 
-    def __init__(self, request: request, idBase64: bool):
+    def __init__(self, request: request, isBase64: bool, isCoverType: bool):
         self.request_id = BaseUtils.get_a_unique_id().strip()
         self.created_on = datetime.now()
         if request is not None:
@@ -32,11 +32,14 @@ class ApiRequest(db.Model):
                 self.agent = user_agent.split("/")[0]
 
             cover_type = None
-            if idBase64:
-                self.vaildateRequest(request, 'cover_type',
-                                     'Cover type required!')
-                cover_type = request.json['cover_type']
-                self.logger.info(f'{cover_type} cover type selected')
+            if isBase64:
+                print(f" ------------------{isCoverType} ")
+                if isCoverType:
+                    print(f" ------------------{isCoverType} ")
+                    self.vaildateRequest(request, 'cover_type',
+                                         'Cover type required!')
+                    cover_type = request.json['cover_type']
+                    self.logger.info(f'{cover_type} cover type selected')
                 self.vaildateRequest(request, 'file', 'File required!')
                 try:
                     self.file_bytes = base64.b64decode(request.json['file'])
@@ -84,7 +87,7 @@ class ApiRequest(db.Model):
     model_id: str = Column(VARCHAR)
     agent: str = Column(VARCHAR)
     file_name: str = Column(VARCHAR)
-    cover_type: str = Column(EnumType(CoverTypes))
+    cover_type: str = Column(EnumType(CoverTypes), default=None)
     file_size: str = Column(VARCHAR)
     preserve_artefacts: str = Column(VARCHAR)
     sample_result: str = Column(VARCHAR)
