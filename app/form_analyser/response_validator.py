@@ -38,13 +38,13 @@ class ResponseValidator:
             .add_field('u_cover_start_date', self._get('u_cover_start_date'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.DATE])\
-            .add_field('u_cover_start_date', self._get('u_cover_start_time'),
+            .add_field('u_cover_start_time', self._get('u_cover_start_date'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.TIME])\
             .add_field('u_cover_end_date', self._get('u_cover_end_date'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.DATE])\
-            .add_field('u_cover_end_date', self._get('u_cover_end_time'),
+            .add_field('u_cover_end_time', self._get('u_cover_end_date'),
                        validations=[FieldValidation.REQUIRED],
                        parser=[FieldParser.TIME])\
             .add_field('u_geographical_cover', self._get('u_geographical_cover'),

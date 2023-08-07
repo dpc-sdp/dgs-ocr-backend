@@ -75,7 +75,7 @@ class ParseTime(ParserService):
 
     @property
     def value_type(self):
-        return 'date'
+        return 'time'
 
 
 def parse_datetime(date_time_str):
