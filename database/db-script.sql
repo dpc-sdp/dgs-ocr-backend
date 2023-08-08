@@ -67,5 +67,6 @@ CREATE TABLE IF NOT EXISTS "expected_results" (
   "public_liability_amount" VARCHAR(100) NULL,
   "product_liability_amount" VARCHAR(100) NULL,
   "product_aggregate" VARCHAR(100) NULL,
-  "region" VARCHAR(100) NULL
+  "region" VARCHAR(100) NULL,
+  "public_aggregate" VARCHAR(100) NULL
 );

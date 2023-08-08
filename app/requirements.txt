@@ -1,15 +1,15 @@
-Flask>=2.0.2
-dapr
-azure-identity
-azure-ai-formrecognizer
-gunicorn
-jsonpath2
-arrow
-colorlog
-jsonschema
-flask-cors
-psycopg2-binary
-openpyxl
-flask_jwt_extended
-Flask-SQLAlchemy
-python-dateutil
+Flask==2.3.2
+dapr == 1.10.0
+azure-identity == 1.13.0
+azure-ai-formrecognizer == 3.3.0
+gunicorn == 21.2.0
+jsonpath2 == 0.4.5
+arrow == 1.2.3
+colorlog == 6.7.0
+jsonschema == 4.19.0
+flask-cors == 4.0.0
+psycopg2-binary == 2.9.7
+openpyxl == 3.1.2
+flask_jwt_extended == 4.5.2
+Flask-SQLAlchemy == 3.0.5
+python-dateutil == 2.8.2

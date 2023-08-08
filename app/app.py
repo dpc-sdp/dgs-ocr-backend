@@ -199,7 +199,7 @@ def analyze_doc():
     result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
-    # apiRequestRepository.save_to_db(response)
+    apiRequestRepository.save_to_db(response)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
