@@ -20,7 +20,7 @@ class TestResponseValidator(unittest.TestCase):
             self.sample_raw = json.load(f)
 
         # Call for resposne handler to process the form recogniser output and convert to consumable format
-        request = ApiRequest(None, False, False)
+        request = ApiRequest(None, "apiname", False, False)
         request.cover_type = CoverTypes.PROFESSIONAL
         responseHandler = ResponseHandler(
             request=request, raw_response=self.sample_raw, process_runtime=".23")

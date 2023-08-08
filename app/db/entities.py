@@ -22,7 +22,7 @@ class ApiRequest(db.Model):
     __tablename__ = 'api_requests'
     logger = LoggerUtil("ApiRequest")
 
-    def __init__(self, request: request, isBase64: bool, isCoverType: bool):
+    def __init__(self, request: request, api, isBase64: bool, isCoverType: bool):
         self.request_id = BaseUtils.get_a_unique_id().strip()
         self.created_on = datetime.now()
         if request is not None:
@@ -86,6 +86,7 @@ class ApiRequest(db.Model):
     created_on: datetime = Column(DateTime, default=datetime.now)
     model_id: str = Column(VARCHAR)
     agent: str = Column(VARCHAR)
+    api: str = Column(VARCHAR)
     file_name: str = Column(VARCHAR)
     cover_type: str = Column(EnumType(CoverTypes), default=None)
     file_size: str = Column(VARCHAR)

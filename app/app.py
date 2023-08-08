@@ -1,4 +1,5 @@
 
+import base64
 import datetime
 import time
 
@@ -101,6 +102,37 @@ def serve_swagger_json():
     return send_file('conf/swagger.json')
 
 
+@app.route('/api/v1/snow/login', methods=['POST'])
+def snowLogin():
+    logger.info("User login initiated!")
+    key = request.headers.get('Authorization')
+    if key is None:
+        logger.errr('Inavlid Authorization key')
+        return ApiResponse().unauthorized('Invalid username or password!')
+
+    encoded_string = key.split()[1]
+    decoded_bytes = base64.b64decode(encoded_string)
+    decoded_text = decoded_bytes.decode("utf-8")
+    base64Credentials = decoded_text.split(":")
+
+    username = base64Credentials[0]
+    password = base64Credentials[1]
+    maskedUsername = mask_username(username)
+    logger.debug(f'Received login request for username: {maskedUsername}')
+
+    if ((username == config.get_username() and password == config.get_password()) or
+            (username == config.get_sn_username() and password == config.get_sn_password())):
+        logger.info('Login in successful')
+    else:
+        logger.warning(f'Failed login attempt for username: {maskedUsername}')
+        return ApiResponse().unauthorized('Invalid username or password!')
+
+    # If authentication is successful, create and return an access token
+    access_token = create_access_token(identity=username)
+    logger.info(f'User {maskedUsername} logged in successfully')
+    return {'access_token': access_token}
+
+
 @app.route('/api/v1/user/login', methods=['POST'])
 def login():
     logger.info("User login initiated!")
@@ -159,7 +191,7 @@ def unauthorized_callback(callback):
 @jwt_required()
 def analyze_doc():
     start_time = time.time()
-    apiRequest = ApiRequest(request, False, True)
+    apiRequest = ApiRequest(request, "analyze-doc", False, True)
     logger.info(
         f"Initiated analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
@@ -182,7 +214,7 @@ def analyze_doc():
 @api_key_required
 def analyze():
     start_time = time.time()
-    apiRequest = ApiRequest(request, True, True)
+    apiRequest = ApiRequest(request, "analyze-v1", True, True)
     logger.info(
         f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
@@ -204,7 +236,7 @@ def analyze():
 @api_key_required
 def analyzev2():
     start_time = time.time()
-    apiRequest = ApiRequest(request, True, False)
+    apiRequest = ApiRequest(request, "analyze-v2", True, False)
     logger.info(
         f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
