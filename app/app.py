@@ -1,3 +1,4 @@
+
 import base64
 import datetime
 import time
@@ -5,7 +6,7 @@ import time
 import config
 import datetime
 
-from functools import wraps
+
 from flask_cors import CORS
 from flask import Flask, request, send_file
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt
@@ -14,6 +15,7 @@ from db.entities import ApiRequest
 from db.repositories import ApiRequestRepository
 from form_analyser.form_recognizer_service import FormRecognizerService
 from form_analyser.response_handler import ResponseHandler
+from utils.key_authentication import api_key_required
 from utils.base_utils import BaseUtils
 from utils.logger_util import LoggerUtil
 from utils.mask_utils import mask_username
@@ -98,18 +100,6 @@ def internal_server_error(error):
 @app.route('/api/swagger.json')
 def serve_swagger_json():
     return send_file('conf/swagger.json')
-
-
-def api_key_required(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        api_key = request.headers.get('X-API-Key')
-        if api_key == config.get_api_key():
-            # API key is valid, proceed with the protected route
-            return app.ensure_sync(fn)(*args, **kwargs)
-        else:
-            return ApiResponse().unauthorized('Authentication required!')
-    return wrapper
 
 
 @app.route('/api/v1/snow/login', methods=['POST'])
@@ -199,17 +189,17 @@ def unauthorized_callback(callback):
 
 @app.route('/api/v1/ocr/analyze-doc', methods=['POST'])
 @jwt_required()
-async def analyze_doc():
+def analyze_doc():
     start_time = time.time()
     apiRequest = ApiRequest(request, "analyze-doc", False, True)
     logger.info(
         f"Initiated analyze-doc for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
-    result: ResponseHandler = await recognizer_service.analyze(apiRequest)
+    result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
-    # apiRequestRepository.save_to_db(response)
+    apiRequestRepository.save_to_db(response)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -222,14 +212,14 @@ async def analyze_doc():
 @app.route('/api/v1/ocr/analyze', methods=['POST'])
 @jwt_required()
 @api_key_required
-async def analyze():
+def analyze():
     start_time = time.time()
     apiRequest = ApiRequest(request, "analyze-v1", True, True)
     logger.info(
         f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
-    result: ResponseHandler = await recognizer_service.analyze(apiRequest)
+    result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
     # apiRequestRepository.save_to_db(response)
@@ -244,14 +234,14 @@ async def analyze():
 @app.route('/api/v2/ocr/analyze', methods=['POST'])
 @jwt_required()
 @api_key_required
-async def analyzev2():
+def analyzev2():
     start_time = time.time()
     apiRequest = ApiRequest(request, "analyze-v2", True, False)
     logger.info(
         f"Initiated analyze for id:{apiRequest.request_id} on: {BaseUtils.get_datefromtime(start_time)}")
     apiRequestRepository.save_to_db(apiRequest)
 
-    result: ResponseHandler = await recognizer_service.analyze(apiRequest)
+    result: ResponseHandler = recognizer_service.analyze(apiRequest)
 
     response = result.parse()
     # apiRequestRepository.save_to_db(response)
