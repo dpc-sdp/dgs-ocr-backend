@@ -1,38 +1,31 @@
 on: push
 
 env:
-  APP_RESOURCE_GROUP_NAME: "development-ocr"
-  APP_RESOURCE_NAME: "devocrback"
+  DEV_APP_RESOURCE_GROUP_NAME: "development-ocr"
+  DEV_APP_RESOURCE_NAME: "devocrback"
   IMAGE_REGISTRY_HOSTNAME: "devocrregistry.azurecr.io"
   IMAGE_NAME: "coolforms"
-  IMAGE_TAG: "latest"
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: test
-        run: |
-          cd app
-          docker build -t $IMAGE_NAME:$IMAGE_TAG .
-          docker create --rm --name formsapp-testcontainer $IMAGE_NAME:$IMAGE_TAG python3 -m unittest discover -s tests -v
-          docker start -a formsapp-testcontainer
-  
   build:
     runs-on: ubuntu-latest
-    needs: test
+    outputs:
+      output-build: ${{steps.id.outputs.build}}
     steps:
       - name: checkout
         uses: actions/checkout@v3
       - name: build
+        id: id
         run: |
           cd app
-          docker build -t $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG -t $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_SHA .
-          docker login -u ${{secrets.ARM_CLIENT_ID}} -p ${{secrets.ARM_CLIENT_SECRET}} $IMAGE_REGISTRY_HOSTNAME
-          docker push $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
-          docker push $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_SHA
+          BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}
+          docker build -t $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:latest -t $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$BUILD .
+          docker create --rm --name formsapp-testcontainer $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:latest python3 -m unittest discover -s tests -v
+          docker start -a formsapp-testcontainer
+          docker login -u ${{secrets.DEV_ARM_CLIENT_ID}} -p ${{secrets.DEV_ARM_CLIENT_SECRET}} $IMAGE_REGISTRY_HOSTNAME
+          docker push $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:latest
+          docker push $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$BUILD
+          echo "build=$BUILD" >> $GITHUB_OUTPUT
   
   deploy:
     if: github.ref == 'refs/heads/master'
@@ -46,6 +39,6 @@ jobs:
       - name: deploy
         run: |
           az extension add -n containerapp
-          az login --service-principal --username ${{secrets.ARM_CLIENT_ID}} --password ${{secrets.ARM_CLIENT_SECRET}} --tenant ${{secrets.ARM_TENANT_ID}}
-          az account set --subscription ${{secrets.ARM_SUBSCRIPTION_ID}}
-          az containerapp update -n $APP_RESOURCE_NAME -g $APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_SHA
+          az login --service-principal --username ${{secrets.DEV_ARM_CLIENT_ID}} --password ${{secrets.DEV_ARM_CLIENT_SECRET}} --tenant ${{secrets.DEV_ARM_TENANT_ID}}
+          az account set --subscription ${{secrets.DEV_ARM_SUBSCRIPTION_ID}}
+          az containerapp update -n $DEV_APP_RESOURCE_NAME -g $DEV_APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:${{needs.build.outputs.output-build}} --set-env-vars version="${{needs.build.outputs.output-build}}:run-$GITHUB_RUN_NUMBER"
