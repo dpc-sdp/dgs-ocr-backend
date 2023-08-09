@@ -1,8 +1,8 @@
-Flask==2.3.2
+flask[async]==2.3.2
 dapr == 1.10.0
 azure-identity == 1.13.0
 azure-ai-formrecognizer == 3.3.0
-gunicorn == 21.2.0
+uwsgi
 jsonpath2 == 0.4.5
 arrow == 1.2.3
 colorlog == 6.7.0
