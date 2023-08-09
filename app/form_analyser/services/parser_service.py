@@ -62,7 +62,10 @@ class ParseTime(ParserService):
                 value = remove_text_ignore_case(
                     value, ["local standard time", "(", ")", "on", "at"])
                 validationResponseDto.output = parse_datetime(
-                    value).strftime("%H:%M")+" " + timezone
+                    value).strftime("%H:%M")
+                if timezone is not None:
+                    validationResponseDto.output = validationResponseDto.output+" " + timezone
+
                 validationResponseDto.status = ActionStatus.SUCCESS.value
             except (ValueError, TypeError):
                 validationResponseDto.output = "00:00"
@@ -87,7 +90,7 @@ def get_timezone(dt_string):
     match = timezone_pattern.search(dt_string)
     if match:
         return match.group(0)
-    return ""
+    return None
 
 
 def parse_datetime(date_time_str):
