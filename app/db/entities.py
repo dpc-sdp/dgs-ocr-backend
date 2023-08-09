@@ -25,6 +25,7 @@ class ApiRequest(db.Model):
     def __init__(self, request: request, api, isBase64: bool, isCoverType: bool):
         self.request_id = BaseUtils.get_a_unique_id().strip()
         self.created_on = datetime.now()
+        self.api = api
         if request is not None:
             user_agent = request.headers.get('User-Agent')
 
@@ -33,9 +34,7 @@ class ApiRequest(db.Model):
 
             cover_type = None
             if isBase64:
-                print(f" ------------------{isCoverType} ")
                 if isCoverType:
-                    print(f" ------------------{isCoverType} ")
                     self.vaildateRequest(request, 'cover_type',
                                          'Cover type required!')
                     cover_type = request.json['cover_type']
