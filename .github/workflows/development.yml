@@ -4,7 +4,7 @@ env:
   DEV_APP_RESOURCE_GROUP_NAME: "development-ocr"
   DEV_APP_RESOURCE_NAME: "devocrback"
   IMAGE_REGISTRY_HOSTNAME: "devocrregistry.azurecr.io"
-  IMAGE_NAME: "coolforms"
+  IMAGE_NAME: "backend"
 
 jobs:
   build:
