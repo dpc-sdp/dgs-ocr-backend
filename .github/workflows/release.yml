@@ -3,13 +3,16 @@ name: release
 on:
   workflow_dispatch:
     inputs:
-      env:
+      environment:
         required: true
         default: 'uat'
         type: choice
         options:
         - uat
         - production
+      version:
+        required: false
+        default: ''
 
 env:
   UAT_APP_RESOURCE_GROUP_NAME: "uat-ocr"
@@ -17,7 +20,7 @@ env:
   PROD_APP_RESOURCE_GROUP_NAME: "production-ocr"
   PROD_APP_RESOURCE_NAME: "prodocrback"
   IMAGE_REGISTRY_HOSTNAME: "devocrregistry.azurecr.io"
-  IMAGE_NAME: "coolforms"
+  IMAGE_NAME: "backend"
 
 jobs:
   deploy:
@@ -28,21 +31,23 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: uat
-        if: ${{ inputs.env == 'uat'}}
+        if: ${{inputs.environment == 'uat'}}
         run: |
           dir=$(pwd)
           git config --global --add safe.directory $dir
-          BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}
+          BUILD=${{inputs.version}}
+          if [ -z $BUILD ]; then BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}; fi
           az extension add -n containerapp
           az login --service-principal --username ${{secrets.UAT_ARM_CLIENT_ID}} --password ${{secrets.UAT_ARM_CLIENT_SECRET}} --tenant ${{secrets.UAT_ARM_TENANT_ID}}
           az account set --subscription ${{secrets.UAT_ARM_SUBSCRIPTION_ID}}
           az containerapp update -n $UAT_APP_RESOURCE_NAME -g $UAT_APP_RESOURCE_GROUP_NAME -i $IMAGE_REGISTRY_HOSTNAME/$IMAGE_NAME:$BUILD --set-env-vars version="$BUILD:run-$GITHUB_RUN_NUMBER"
       - name: production
-        if: ${{ inputs.env == 'production'}}
+        if: ${{inputs.environment == 'production'}}
         run: |
           dir=$(pwd)
           git config --global --add safe.directory $dir
-          BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}
+          BUILD=${{inputs.version}}
+          if [ -z $BUILD ]; then BUILD=$(git rev-parse --abbrev-ref HEAD) && BUILD=${BUILD//\//-}; fi
           az extension add -n containerapp
           az login --service-principal --username ${{secrets.PROD_ARM_CLIENT_ID}} --password ${{secrets.PROD_ARM_CLIENT_SECRET}} --tenant ${{secrets.PROD_ARM_TENANT_ID}}
           az account set --subscription ${{secrets.PROD_ARM_SUBSCRIPTION_ID}}
