@@ -6,7 +6,7 @@
                 "input": "31/03/2023",
                 "message": "",
                 "name": "ParseDate",
-                "output": "2023-03-31",
+                "output": "2023-03-31 00:00",
                 "parms": "",
                 "status": 1
             }
@@ -15,7 +15,7 @@
         "raw_value_type": "date",
         "validations": [
             {
-                "input": "2023-03-31",
+                "input": "2023-03-31 00:00",
                 "message": null,
                 "name": "RequiredValidation",
                 "output": "",
@@ -23,7 +23,7 @@
                 "status": 1
             }
         ],
-        "value": "2023-03-31",
+        "value": "2023-03-31 00:00",
         "value_type": "datetime"
     },
     "u_cover_start_date": {
@@ -33,7 +33,7 @@
                 "input": "31/03/2022",
                 "message": "",
                 "name": "ParseDate",
-                "output": "2022-03-31",
+                "output": "2022-03-31 00:00",
                 "parms": "",
                 "status": 1
             }
@@ -42,7 +42,7 @@
         "raw_value_type": "date",
         "validations": [
             {
-                "input": "2022-03-31",
+                "input": "2022-03-31 00:00",
                 "message": null,
                 "name": "RequiredValidation",
                 "output": "",
@@ -50,7 +50,7 @@
                 "status": 1
             }
         ],
-        "value": "2022-03-31",
+        "value": "2022-03-31 00:00",
         "value_type": "datetime"
     },
     "u_cover_type": {
@@ -77,7 +77,7 @@
                 "input": "March 31, 2022",
                 "message": "",
                 "name": "ParseDate",
-                "output": "2022-03-31",
+                "output": "2022-03-31 00:00",
                 "parms": "",
                 "status": 1
             }
@@ -86,7 +86,7 @@
         "raw_value_type": "float",
         "validations": [
             {
-                "input": "2022-03-31",
+                "input": "2022-03-31 00:00",
                 "message": null,
                 "name": "RequiredValidation",
                 "output": "",
@@ -94,7 +94,7 @@
                 "status": 1
             }
         ],
-        "value": "2022-03-31",
+        "value": "2022-03-31 00:00",
         "value_type": "datetime"
     },
     "u_cover_end_time": {

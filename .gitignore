@@ -8,3 +8,5 @@ __pycache__/
 .vscode/*
 .DS_Store
 upload_log_*
+abc.txt
+app/tests/performance_cal.py
