@@ -165,13 +165,13 @@ class TestFieldBuilder(unittest.TestCase):
         self.assertDictEqual(
             result, {
                 'Date of issue': {
-                    'value': '2022-05-20',
+                    'value': '2022-05-20 00:00',
                     'confidence': '0.2',
                     'value_type': 'datetime',
                     'raw_value_type': 'str',
                     'raw_value': '2022-05-20',
                     'parsers': [{'name': 'ParseDate', 'input': '2022-05-20',
-                                'output': '2022-05-20',
+                                'output': '2022-05-20 00:00',
                                  'parms': '',
                                  'status': 1, 'message': ''}],
                     'validations': [],

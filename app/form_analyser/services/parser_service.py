@@ -29,7 +29,7 @@ class ParseDate(ParserService):
                 value = remove_text_ignore_case(
                     value, ["local standard time", "(", ")", "on", "at"])
                 validationResponseDto.output = parse_datetime(
-                    value).strftime("%Y-%m-%d")
+                    value).strftime("%Y-%m-%d %H:%M")
                 validationResponseDto.status = ActionStatus.SUCCESS.value
             except (ValueError, TypeError):
                 validationResponseDto.output = None
